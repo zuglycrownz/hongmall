@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+		
+		<bean id = "hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	<!--개발용
+				<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		 -->
+		 <!-- 배포용 -->
+	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" /> 
+      <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe" />
+		<!--<property name="driverClassName" value="net.sf.Log4jdbc.sql.jdbcopi.DriverSpy"></property>  -->
+		<property name="username" value="spring"></property>
+		<property name="password" value="spring"></property>
+		</bean>
+		
+		<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg ref="hikariConfig"></constructor-arg>
+		</bean>
+		<!-- mybatis-spring, mybatis 라이브러리를 이용한 설정작업 -->
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		</bean>
+		<!-- service 패키지 -->
+		<context:component-scan base-package="com.hongmall.service"></context:component-scan>
+		<!-- mapper 퍀키지 -->
+		<mybatis-spring:scan base-package="com.hongmall.mapper"/>
+		
+</beans>
