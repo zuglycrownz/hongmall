@@ -1,165 +1,146 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  </head>
-  <body>
-    <
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>Pricing example · Bootstrap v4.6</title>
+
+    <!-- Bootstrap core CSS -->
+<%@include file="/WEB-INF/views/comm/plugIn2.jsp" %>
+
+
+
+    <!-- Favicons -->
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
 
     
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-  <symbol id="check" viewBox="0 0 16 16">
-    <title>Check</title>
-    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
-  </symbol>
-</svg>
 
-<div class="container py-3">
-  <header>
-    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img"><title>Bootstrap</title><path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z" fill="currentColor"></path></svg>
-        <span class="fs-4">Pricing example</span>
-      </a>
+  </head>
+  <body>
+    
+<%@include file="/WEB-INF/views/comm/header.jsp" %>
 
-      <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Features</a>
-        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Enterprise</a>
-        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
-        <a class="py-2 text-dark text-decoration-none" href="#">Pricing</a>
-      </nav>
-    </div>
-
-    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-      <h1 class="display-4 fw-normal">회원가입</h1>
+<div class="container">
+   <div class="text-center">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+      <h3 class="box-title">회원가입</h3>
+      </div>
       
-    </div>
-  </header>
-<form role="form">
+      <form role="form">
       <div class="box-body">
       <div class="form-group row">
-        <label for="MBSP_ID" class="col-2">아이디</label>
+        <label for="mbsp_id" class="col-2">아이디</label>
         <div class="col-8">
-          <input type="text" name="MBSP_ID" class="form-control" id="MBSP_ID" placeholder="아이디입력..." >
-   
+          <input type="text" class="form-control" name="mbsp_id" id="mbsp_id" placeholder="아이디 입력...">
         </div>
         <div class="col-2">
-        <button type="button" class="btn btn-info" id="idcheck">아이디중복확인</button>
+          <button type="button" class="btn btn-outline-info" id="idCheck">ID Check</button>
         </div>
+      </div>
+      <div class="form-group row">
+        <label for="mbsp_password" class="col-2">비밀번호</label>
+        <div class="col-10">
+          <input type="password" class="form-control" name="mbsp_password" id="mbsp_password" placeholder="비밀번호 입력...">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="mbsp_password2" class="col-2">비밀번호 확인</label>
+        <div class="col-10">
+          <input type="password" class="form-control" id="mbsp_password2" placeholder="비밀번호 확인...">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="mbsp_name" class="col-2">이름</label>
+        <div class="col-10">
+          <input type="text" class="form-control" name="mbsp_name" id="mbsp_name" placeholder="이름입력...">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="mbsp_email" class="col-2">전자우편</label>
+        <div class="col-8">
+          <input type="email" class="form-control" name="mbsp_email" id="mbsp_email" placeholder="전자우편입력...">
+        </div>
+        <div class="col-2">
+        <button type="button" class="btn btn-outline-info" id="mailAuto">메일인증</button>
+      </div>
+      </div>
+      <div class="form-group row">
+        <label for="mbsp_email" class="col-2">메일인증</label>
+        <div class="col-8">
+          <input type="email" class="form-control" name="mbsp_email" id="mbsp_email2" placeholder="코드입력...">
+        </div>
+        <div class="col-2">
+        <button type="button" class="btn btn-outline-info" id="mailAuto2">메일인증</button>
+      </div>
       </div>
 
-      <div class="form-group row">
-        <label for="MBSP_PASSWORD" class="col-2">비밀번호</label>
-        <div class="col-10">
-          <input type="password" class="form-control" id="MBSP_PASSWORD" name="MBSP_PASSWORD" placeholder="비밀번호입력..." >
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="MBSP_PASSWORD2" class="col-2">비밀번호 확인</label>
-        <div class="col-10">
-          <input type="email" class="form-control" id="MBSP_PASSWORD2" name="MBSP_PASSWORD2" placeholder="비밀번호확인...">
-        </div>
-      </div>
-            <div class="form-group row">
-        <label for="MBSP_NAME" class="col-2">이름</label>
-        <div class="col-10">
-          <input type="text" class="form-control" id="MBSP_NAME" name="MBSP_NAME" placeholder="성명입력...">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="MBSP_EMAIL" class="col-2">전자우편</label>
-        <div class="col-10">
-          <input type="email" class="form-control" name="MBSP_EMAIL" id="MBSP_EMAIL" placeholder="이메일입력..." >
-        </div>
-      </div>
       <div class="form-group row">
         <label for="sample2_postcode" class="col-2">우편번호</label>
         <div class="col-8">
-          <input type="text" class="form-control" id="sample2_postcode" name="MBSP_ZIPCODE" placeholder="신주소입력...">
+          <input type="text" class="form-control" name="mbsp_zipcode" id="sample2_postcode" placeholder="우편번호...">
         </div>
         <div class="col-2">
-        <button type="button" class="btn btn-info" onclick="sample2_execDaumPostcode()">우편번호</button>
+        	<button type="button" onclick="sample2_execDaumPostcode()" class="btn btn-outline-info">우편번호 찾기</button>
         </div>
       </div>
-       <div class="form-group row">
+      <div class="form-group row">
         <label for="sample2_address" class="col-2">기본주소</label>
         <div class="col-10">
-          <input type="text" class="form-control" id="sample2_address" name="MBSP_ADDR" placeholder="기본주소입력..." >
+          <input type="text" class="form-control" name="mbsp_addr" id="sample2_address" placeholder="기본주소입력...">
         </div>
       </div>
-       <div class="form-group row">
+      <div class="form-group row">
         <label for="sample2_detailAddress" class="col-2">상세주소</label>
         <div class="col-10">
-          <input type="text" class="form-control" id="sample2_detailAddress" name="MBSP_ADDR" placeholder="상세주소입력..." >
+          <input type="text" class="form-control" name="mbsp_deaddr" id="sample2_detailAddress" placeholder="상세주소입력...">
           <input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
         </div>
       </div>
       <div class="form-group row">
-        <label for="MBSP_PHONE" class="col-2">전화번호</label>
+        <label for="mbsp_phone" class="col-2">전화번호</label>
         <div class="col-10">
-          <input type="text" class="form-control" id="MBSP_PHONE" name="MBSP_PHONE" placeholder="전화번호입력..." >
+          <input type="text" class="form-control" name="mbsp_phone" id="mbsp_phone" placeholder="전화번호입력...">
         </div>
       </div>
       
       </div>
       
       <div class="box-footer">
-
+      <button type="submit" class="btn btn-primary">회원가입</button>
       </div>
       </form>
-      <button type="submit" class="btn btn-primary">Submit</button>
-     <!-- 
-            <button type="button" class="w-100 btn btn-lg btn-primary">suBmit</button>
-            -->
-          </div>
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm border-primary">
-         
       </div>
-    </div>
+   </div>
 
+  <%@include file="/WEB-INF/views/comm/footer.jsp" %>
+</div>
 
-
-  <footer class="pt-4 my-md-5 pt-md-5 border-top">
-    <div class="row">
-      <div class="col-12 col-md">
-
-      </div>
-      <div class="col-6 col-md">
-        <h5>Features</h5>
-        <ul class="list-unstyled text-small">
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
-        </ul>
-      </div>
-      <div class="col-6 col-md">
-        <h5>Resources</h5>
-        <ul class="list-unstyled text-small">
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
-        </ul>
-      </div>
-      <div class="col-6 col-md">
-        <h5>About</h5>
-        <ul class="list-unstyled text-small">
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
-        </ul>
-      </div>
-    </div>
-  </footer>
-  <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+<!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
+<div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
 <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
 </div>
 
@@ -251,19 +232,69 @@
         element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
     }
 </script>
-<%@include file="/WEB-INF/views/comn/plugin.jsp" %>
 
-
+<%@include file="/WEB-INF/views/comm/plugIn.jsp" %>
+  
 <script>
-$(document).ready(function() {
-	$("#idcheck").click(function() {
-    if($("MBSP_ID").val() == "") {
-		alert("아이디를 입력하세요");
-		return;
-        };
+  // jquery.slim.min.js 파일에 jquery 명령어가 정의되어 있음
+  // 별칭: $  -> jQuery()함수
+  // ready()이벤트 메서드 : 브라우저가 html태그를 모두 읽고난 후에 동작하는 이벤트 특징.
+  // 자바스크립트 이벤트 등록 : https://www.w3schools.com/js/js_htmldom_eventlistener.asp
+  $(document).ready(function() {
+    let useIDCheck = false;
+    // document.getElementById("idCheck");
+    $("#idCheck").click(function() {
+      // alert("아이디 중복체크");
+      if($("#mbsp_id").val() == "") {
+        alert("아이디를 입력하세요.");
+        $("#mbsp_id").focus();
+        return;
+      }
+	$.ajax({
+      url : "/member/idCheck",
+      type : "get",
+      dataType : "text",
+      data : {mbsp_id : $("#mbsp_id").val()},
+      success: function(result) {
+        if(result == "yes") {
+          alert("아이디 사용가능");
+          useIDCheck = true;
+        }
+        else{
+          alert("아이디 사용 불가능");
+          useIDCheck = false;
+          $("#mbsp_id").val("");
+          $("#mbsp_id").focus();
+
+        }
+      }
+    });
   });
+  $(document).ready(function() {
+  $("#mailAuto").click(function() {
+    if($("mbsp_email").val() == "") {
+      alert("메일을 입력하세요.");
+      $("#mbsp_email").focus();
+      return
+    }
+
+    $.ajax({
+      url : "/email/authcode",
+      type : "get",
+      dataType : "text",
+      data : {receiverMail : $("#mbsp_email").val()},
+      success : function(result) {
+        if(result == 'success'){
+        alert("메일발송완료");
+        }
+      }
+     
+      
+    })
+  })
+});
 });
 </script>
-
   </body>
 </html>
+    
