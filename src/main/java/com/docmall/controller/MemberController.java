@@ -1,6 +1,7 @@
 package com.docmall.controller;
 
 import javax.mail.Session;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.type.DateOnlyTypeHandler;
@@ -38,7 +39,7 @@ public class MemberController {
 		
 		log.info("called... join");
 	}
-	
+	//다른데가면 String, 안돌아오면 Void
 	@PostMapping("/join")
 	public String join(MemberVO vo){
 		
@@ -84,6 +85,14 @@ public class MemberController {
 		return "redirect:" + url;
 	}
 	
+	@GetMapping("/logout") 
+	public String logout(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		session.invalidate();
+		
+		return "redirect:/";
+	}
 	
 	//비동기방식. ajax문법으로 호출
 	
