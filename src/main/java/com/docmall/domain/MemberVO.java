@@ -19,6 +19,7 @@ public class MemberVO {
 	private String	mbsp_zipcode;
 	private String	mbsp_addr;
 	private String	mbsp_deaddr;
+	private String	mbsp_nick;
 	private String	mbsp_phone;
 	private int		mbsp_point;
 	private Date	mbsp_lastlogin;
