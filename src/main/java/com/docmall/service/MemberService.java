@@ -9,4 +9,8 @@ public interface MemberService {
 	void join(MemberVO vo);
 	
 	MemberVO login(String mbsp_id);
+	
+	void modify(MemberVO vo);
+	
+	void loginTimeUpdate(String mbsp_id);
 }
