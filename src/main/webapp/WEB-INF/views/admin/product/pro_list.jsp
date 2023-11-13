@@ -96,7 +96,7 @@ desired effect
 								<th style="width: 10%">수정</th>
 								<th style="width: 10%">삭제</th>
 							</tr>
-							<c:forEach items="${pro_list }" var="productVO">
+							<c:forEach items="${pro_list}" var="productVO">
 							<tr>
 								<td><input type="checkbox" name="check" value="${productVO.pro_num }"></td>
 								<td>${productVO.pro_num }</td>

@@ -8,7 +8,7 @@ import com.docmall.dto.Criteria;
 public interface UserProductService {
 
 	
-	List<ProductVO> pro_list(Integer cg_code, Criteria cri);
+	List<ProductVO> pro_list(Integer cg_code,Criteria cri);
 	
 	int getTotalCount(Integer cg_code);
 }

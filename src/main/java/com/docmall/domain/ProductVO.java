@@ -2,13 +2,9 @@ package com.docmall.domain;
 
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
+@Data
 public class ProductVO {
 
 	private Integer pro_num; //사용자

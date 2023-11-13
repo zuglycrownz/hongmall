@@ -47,23 +47,25 @@
 <%@include file="/WEB-INF/views/comm/category_menu.jsp" %>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
- <p>2차카테고리 상품리스트</p>
+ <p>2차카테고리 상품리스트 : ${cg_name}</p>
 </div>
 
 <div class="container">
   <div class="card-deck mb-3 text-center row">
-    <c:forEach items="${pro_list}" var="productVO">
+ <c:forEach items="${pro_list}" var="productVO">
 <div class="col-md-3">
 <div class="card mb-4 shadow-sm">
 <img src="/user/product/imageDisplay?dateFolderName=${productVO.pro_up_folder }&fileName=${productVO.pro_img }" style="width:200px;height:200px;">
  <div class="card-body">
-<p class="card-text">상품이름</p>
+<p class="card-text">${productVO.pro_name}</p>
 <div class="d-flex justify-content-between align-items-center">
 <div class="btn-group">
-<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+<button type="button" class="btn btn-sm btn-outline-secondary" name="btn_cart_add">Cart</button>
+<button type="button" class="btn btn-sm btn-outline-secondary" name="btn_buy">Buy</button>
  </div>
-<small class="text-body-secondary">9 mins</small>
+<small class="text-muted">
+<fmt:formatDate type="currencyt" pattern="\#,###" value="${productVO.pro_price}"></fmt:formatDate>${productVO.pro_price}
+</small>
  </div>
 
             </div>
@@ -81,6 +83,9 @@
 								<input type="hidden" name="amount"  id="amount" value="${pageMaker.crl.amount}" />
 								<input type="hidden" name="type" id="type" value="${pageMaker.crl.type}" />
 								<input type="hidden" name="keyword" id="keyword" value="${pageMaker.crl.keyword}" />
+								
+								<input type="hidden" name="cg_code" id="cg_code" value="${cg_code}" />
+								<input type="hidden" name="cg_name" id="cg_name" value="${cg_name}" />
 								
 							  </form>
 							</div>
@@ -117,6 +122,26 @@
 
   <%@include file="/WEB-INF/views/comm/footer.jsp" %>
 </div>
+<script>
+$(document).ready(function() {
+  let actionForm = $("#actionForm");
+  $(".movepage").on("click", function(e) {
+  
+      e.preventDefault(); // a태그의 href 링크기능을 제거. href속성에 페이지번호를 숨겨둠.
+
+      actionForm.attr("action", "/user/product/pro_list");
+      actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+
+       actionForm.submit();
+    });
+
+    $(".button[name='btn_cart_add']").on("click",function() {
+
+      console.log("장바구니");
+
+    })
+    });
+    </script>
 
 <!--  
 <script src="/js/category_menu.js"></script>

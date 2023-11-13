@@ -23,6 +23,7 @@ $(document).ready(function() {
 e.preventDefault();
 let sel_first_category = $(this);
 let cg_code  = $(this).data("cg_code");
+let cg_name  = $(this).data("cg_name");
 
 let url='/category/secondCategory/'+ cg_code;
     $.getJSON(url,function(category) {
@@ -32,7 +33,7 @@ let url='/category/secondCategory/'+ cg_code;
 
         for(let i=0; i<category.length; i++) {
           str +='<li class = "nav-item">';
-          str += '<a class="nav-link active" aria-current="page"  href="#" data-cg_code="' + category[i].cg_code + '">' + category[i].cg_name + '</a>';
+          str += '<a class="nav-link active" aria-current="page"  href="#" data-cg_code="' + category[i].cg_code + '"data-cg_name="' + category[i].cg_name+ '">' + category[i].cg_name + '</a>';
           str +='</li>'
 
         }
@@ -53,7 +54,11 @@ $("#category_menu").on("click","ul#second_category li a",function(e) {
   // console.log("2차카테고리");
   e.preventDefault();
   let cg_code = $(this).data("cg_code");
-  let url = '/user/product/pro_list/' + cg_code;
+  let cg_name = $(this).data("cg_name");
+
+  let url = '/user/product/pro_list?cg_code='+ cg_code + "&" + 'cg_name=' + cg_name;
+
+  // let url = '/user/product/pro_list?cg_code='+ cg_code + "&" + 'cg_name=' + cg_name;
   location.href= url;
 
 })

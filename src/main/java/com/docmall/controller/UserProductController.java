@@ -8,9 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.docmall.domain.ProductVO;
@@ -27,8 +26,9 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @Log4j
 public class UserProductController {
+	@ModelAttribute
 	@GetMapping("/pro_list")
-	public void pro_list(Criteria cri , @RequestParam("cg_code") Integer cg_code) throws Exception {
+	public void pro_list(Criteria cri , Integer cg_code, @ModelAttribute("cg_name")String cg_name) throws Exception {
 		
 		
 		
@@ -38,15 +38,14 @@ public class UserProductController {
 	@Resource(name = "uploadPath") // servlet-context.xml 의 uploadPath bean이름 참조를 해야 함.
 	private String uploadPath;
 	// /user/product/pro_list?cg_code=2차카테고리코드
-	@GetMapping("/pro_list/{cg_code}")
-	public String pro_list(Criteria cri ,@PathVariable("cg_code") Integer cg_code,Model model) throws Exception {
+	@GetMapping("/pro_list/")
+	@ModelAttribute
+	public String pro_list(Criteria cri , Integer cg_code,String cg_name,Model model) throws Exception {
 		
-		
+		cri.setAmount(8);
 		
 		List<ProductVO> pro_list = userProductService.pro_list(cg_code,cri);
-		
-		// 날짜폴더의 역슬래시를 슬래시로 바꾸는 작업.  이유? 역슬래시로 되어있는 정보가 스프링으로 보내는 요청데이타에 사용되면 에러발생.
-		// 스프링에서 처리 안하면, 자바스크립에서 처리 할수도 있다.
+		System.out.println("플레이리스트"+userProductService.pro_list(cg_code,cri));
 		pro_list.forEach(vo -> {
 			vo.setPro_up_folder(vo.getPro_up_folder().replace("\\", "/"));
 		});
