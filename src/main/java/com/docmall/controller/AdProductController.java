@@ -261,7 +261,7 @@ public class AdProductController {
 		
 		// 1차카테고리를 부모로 둔 2차카테고리 정보. 예> Top(1) : 
 		// 현재상품의 1차카테고리 코드 : firstCategory.getCg_parent_code()
-		model.addAttribute("second_categoryList", adCategoryService.getSecondCategorylist(firstCategory.getcg_parent_code()));
+		model.addAttribute("second_categoryList", adCategoryService.getSecondCategorylist(firstCategory.getCg_parent_code()));
 		
 		
 	}

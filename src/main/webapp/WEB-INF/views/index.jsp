@@ -77,10 +77,10 @@
 							<!--1)페이지번호 클릭할 때 사용  [이전]  1	2	3	4	5 [다음]  -->
 							<!--2)목록에서 상품이미지 또는 상품명 클릭할 때 사용   -->
 							  <form id="actionForm" action="" method="get">
-								<input type="hidden" name="pageNum" id="pageNum" value="${pageMaker.crl.pageNum}" />
-								<input type="hidden" name="amount"  id="amount" value="${pageMaker.crl.amount}" />
-								<input type="hidden" name="type" id="type" value="${pageMaker.crl.type}" />
-								<input type="hidden" name="keyword" id="keyword" value="${pageMaker.crl.keyword}" />
+								<input type="hidden" name="pageNum" id="pageNum" value="${pageMaker.cri.pageNum}" />
+								<input type="hidden" name="amount"  id="amount" value="${pageMaker.cri.amount}" />
+								<input type="hidden" name="type" id="type" value="${pageMaker.cri.type}" />
+								<input type="hidden" name="keyword" id="keyword" value="${pageMaker.cri.keyword}" />
 								
 							  </form>
 							</div>
@@ -97,7 +97,7 @@
 									<!-- 1	2	3	4	5 6	7	8	9	10  [다음] -->
 									<!-- [이전] 11	12	13	14	15 16	17	18	19	20   -->
 									<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num">
-										<li class='page-item ${pageMaker.crl.pageNum ==  num ? "active":"" }'aria-current="page">
+										<li class='page-item ${pageMaker.cri.pageNum ==  num ? "active":"" }'aria-current="page">
 											<a class="page-link movepage" href="${num }" data-page="${num }">${num }</a>
 										</li>
 									</c:forEach>

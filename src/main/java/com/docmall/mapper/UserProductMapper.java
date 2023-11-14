@@ -10,7 +10,7 @@ import com.docmall.dto.Criteria;
 public interface UserProductMapper {
 
 	
-	List<ProductVO> pro_list(@Param("cg_code") Integer cg_code,@Param("cri") Criteria cri);
+	List<ProductVO> pro_list(@Param("cg_code") Integer cg_code, @Param("cri") Criteria cri);
 	
 	int getTotalCount(Integer cg_code);
 }

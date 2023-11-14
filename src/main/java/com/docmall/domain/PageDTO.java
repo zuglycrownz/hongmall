@@ -16,22 +16,22 @@ public class PageDTO {
 	
 	private int total; //테이블의 데이터 총 개수
 	
-	private Criteria crl; //1)페이징 : pagenum,amount 2)검색:type,keyword
+	private Criteria cri; //1)페이징 : pagenum,amount 2)검색:type,keyword
 	
-	public PageDTO(Criteria crl, int total) {
-		this.crl = crl;
+	public PageDTO(Criteria cri, int total) {
+		this.cri = cri;
 		this.total = total;
 		//totla = 13, amount = 5로 가정
 		int pageSize = 10;
 		int endPageinfo = pageSize - 1;
 		//1/10.0 * 10, ceil는 무조건올림 0.1=1 즉 10
-		this.endPage = (int) (Math.ceil(crl.getPageNum() / (double) pageSize)) * pageSize;
+		this.endPage = (int) (Math.ceil(cri.getPageNum() / (double) pageSize)) * pageSize;
 		
 		// 10 - 9 = 1
 		this.startPage = this.endPage - endPageinfo;
 		
 		//13*1.0 / 5 = 2.6 -> ceil로인해 3
-		int readEnd = (int) (Math.ceil((total * 1.0) / crl.getAmount()));
+		int readEnd = (int) (Math.ceil((total * 1.0) / cri.getAmount()));
 		
 		if(readEnd <= this.endPage) {
 			this.endPage = readEnd;
