@@ -10,6 +10,12 @@ update cart_tbl set cart_amount = #{cart_amount} where cart_code = #{cart_code}
 
 </update>
 
+<delete id="cart_list_del" parameterType="Long">
+
+delete from cart_tbl where cart_code = #{cart_code}
+
+</delete>
+
 
 <insert id="cart_add" parameterType="com.docmall.domain.CartVO">
 
@@ -37,10 +43,9 @@ from
 product_tbl
 
 
-
-
-
 </select>
+
+
 
 <select id="cart_list" resultType="com.docmall.dto.CartDTOList">
 

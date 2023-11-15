@@ -16,8 +16,12 @@ public interface CartService {
 	List<CartDTOList> cart_list(String mbsp_id);
 	
 	
+	List<CartDTOList> pro_list2();
+	
 	List<ProductVO> pro_list();
 	
 	void cart_amount_change(Long cart_code, int cart_amount);
+	
+	void cart_list_del(Long cart_code);
 	
 }

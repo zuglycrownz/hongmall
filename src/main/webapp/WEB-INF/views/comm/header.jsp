@@ -27,7 +27,7 @@
     </c:if>
     
     <a class="p-2 text-dark" href="/member/mypage">MyPage</a>
-    <a class="p-2 text-dark" href="#">Order</a>
+    <a class="p-2 text-dark" href="/user/order/orderListInfo">Order</a>
     <a class="p-2 text-dark" href="/user/cart/cart_list">Cart</a>
     
     <a class="p-2 text-dark" href="/admin/intro">Admin</a>

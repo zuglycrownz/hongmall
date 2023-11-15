@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.aop.target.SimpleBeanTargetSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.docmall.domain.CartVO;
 import com.docmall.domain.MemberVO;
 import com.docmall.domain.ProductVO;
-import com.docmall.dto.CartDTOList;
 import com.docmall.service.CartService;
 import com.docmall.util.FileUtils;
 
@@ -93,6 +91,22 @@ public class CartController {
 		entity = new ResponseEntity<String>("success",HttpStatus.OK);
 		return entity;
 	}
+	@PostMapping("/cart_list_delete")
+	public ResponseEntity<String> cart_list_del(HttpSession session,Long cart_code) throws Exception {
+		ResponseEntity<String> entity = null;
+		cartService.cart_list_del(cart_code);
+		//ajax방식
+		entity = new ResponseEntity<String>("success",HttpStatus.OK);
+		return entity;
+	}
+	
+	@GetMapping("/cart_list_del")
+	public String cart_list_del2(Long cart_code)throws Exception {
+		cartService.cart_list_del(cart_code);
+		
+		return "redirect:/user/cart/cart_list";
+	}
+	
 	
 	@ResponseBody
 	@GetMapping("/imageDisplay") // /user/product/imageDisplay?dateFolderName=값1&fileName=값2
@@ -100,4 +114,5 @@ public class CartController {
 		
 		return FileUtils.getFile(uploadPath + dateFolderName, fileName);
 	}
+	
 }
