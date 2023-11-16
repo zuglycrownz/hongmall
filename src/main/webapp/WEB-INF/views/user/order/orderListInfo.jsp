@@ -101,45 +101,45 @@
     <div class="form-group row">
       <label for="mbsp_id" class="col-2">주문자</label>
       <div class="col-10">
-        <input type="text" class="form-control" name="mbsp_id" id="mbsp_id" placeholder="아이디 입력...">
+        <input type="text" class="form-control" id="b_mbsp_id" value="${loginStatus.mbsp_id}" readonly>
       </div>
     </div>
 
     <div class="form-group row">
       <label for="mbsp_name" class="col-2">이름</label>
       <div class="col-10">
-        <input type="text" class="form-control" name="mbsp_name" id="mbsp_name" placeholder="이름입력...">
+        <input type="text" class="form-control" id="b_mbsp_name" value="${loginStatus.mbsp_name}" readonly>
       </div>
     </div>
     <div class="form-group row">
       <label for="mbsp_email" class="col-2">전자우편</label>
       <div class="col-10">
-        <input type="email" class="form-control" name="mbsp_email" id="mbsp_email" placeholder="전자우편입력...">
+        <input type="email" class="form-control" id="b_mbsp_email" value="${loginStatus.mbsp_email}" readonly>
       </div>
     </div>
   
     <div class="form-group row">
       <label for="sample2_postcode" class="col-2">우편번호</label>
       <div class="col-10">
-        <input type="text" class="form-control" name="mbsp_zipcode" id="" placeholder="우편번호...">
+        <input type="text" class="form-control" id="b_mbsp_zipcode" value="${loginStatus.mbsp_zipcode}" readonly>
       </div>
     </div>
     <div class="form-group row">
       <label for="sample2_address" class="col-2">기본주소</label>
       <div class="col-10">
-        <input type="text" class="form-control" name="mbsp_addr" id="" placeholder="기본주소입력...">
+        <input type="text" class="form-control" id="b_mbsp_addr" value="${loginStatus.mbsp_addr}" readonly>
       </div>
     </div>
     <div class="form-group row">
       <label for="sample2_detailAddress" class="col-2">상세주소</label>
       <div class="col-10">
-        <input type="text" class="form-control" name="mbsp_deaddr" id="" placeholder="상세주소입력...">
+        <input type="text" class="form-control" id="b_mbsp_deaddr" value="${loginStatus.mbsp_deaddr}" readonly>
       </div>
     </div>
     <div class="form-group row">
       <label for="mbsp_phone" class="col-2">전화번호</label>
       <div class="col-10">
-        <input type="text" class="form-control" name="mbsp_phone" id="mbsp_phone" placeholder="전화번호입력...">
+        <input type="text" class="form-control" id="b_mbsp_phone" value="${loginStatus.mbsp_phone}" readonly>
       </div>
     </div>
 
@@ -151,18 +151,12 @@
   <div class="form-group row">
     <label for="mbsp_id" class="col-2">수령인</label>
     <div class="col-8">
-      <input type="text" class="form-control" name="mbsp_id" id="mbsp_id" placeholder="아이디 입력...">
+      <input type="text" class="form-control" name="mbsp_name" id="mbsp_name" placeholder="아이디 입력...">
     </div>
       <div class="col-2">
-      <input type="checkbox" class="form-control"/>수령인과동일
+      <input type="checkbox" class="form-control" id="same"/>주문자와동일
     </div>
   </div>
-
-  <div class="form-group row">
-    <label for="mbsp_name" class="col-2">이름</label>
-    <div class="col-10">
-      <input type="text" class="form-control" name="mbsp_name" id="mbsp_name" placeholder="이름입력...">
-    </div>
   </div>
   <div class="form-group row">
     <label for="mbsp_email" class="col-2">전자우편</label>
@@ -173,7 +167,7 @@
   <div class="form-group row">
     <label for="sample2_postcode" class="col-2">우편번호</label>
     <div class="col-8">
-      <input type="text" class="form-control" name="mbsp_zipcode" id="sample2_postcode" placeholder="우편번호...">
+      <input type="text" class="form-control" name="mbsp_zipcode" id="mbsp_zipcode" placeholder="우편번호...">
     </div>
     <div class="col-2">
       <button type="button" onclick="sample2_execDaumPostcode()" class="btn btn-outline-info">우편번호 찾기</button>
@@ -182,13 +176,13 @@
   <div class="form-group row">
     <label for="sample2_address" class="col-2">기본주소</label>
     <div class="col-10">
-      <input type="text" class="form-control" name="mbsp_addr" id="sample2_address" placeholder="기본주소입력...">
+      <input type="text" class="form-control" name="mbsp_addr" id="mbsp_addr" placeholder="기본주소입력...">
     </div>
   </div>
   <div class="form-group row">
     <label for="sample2_detailAddress" class="col-2">상세주소</label>
     <div class="col-10">
-      <input type="text" class="form-control" name="mbsp_deaddr" id="sample2_detailAddress" placeholder="상세주소입력...">
+      <input type="text" class="form-control" name="mbsp_deaddr" id="mbsp_deaddr" placeholder="상세주소입력...">
       <input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
     </div>
   </div>
@@ -202,9 +196,9 @@
     <legend>결제방법선택</legend>
     <div class="form-group row">
       <label for="mbsp_phone" class="col-2">결제방법</label>
-      <div class="col-10">
+      <class="col-10">
         <input type="radio" name="mbsp_phone" id="mbsp_phone" >무통장입금<br>
-        <input type="radio" name="mbsp_phone" id="mbsp_phone" >카카오페이<br>
+        <input type="radio" name="mbsp_phone" id="mbsp_phone" ><img src="/kakaopay/payment_icon_yellow_small.png"><br>
       </div>
     </div>
         </fieldset>
@@ -325,6 +319,30 @@
             }
             fn_cart_sum_price()
 
+            $("#same").on("click",function() {
+
+              if($("#same").is(":checked")) {
+                $("#mbsp_name").val($("#b_mbsp_name").val());
+                $("#mbsp_email").val($("#b_mbsp_email").val());
+                $("#mbsp_zipcode").val($("#b_mbsp_zipcode").val());
+                $("#mbsp_addr").val($("#b_mbsp_addr").val());
+                $("#mbsp_deaddr").val($("#b_mbsp_deaddr").val());
+                $("#mbsp_phone").val($("#b_mbsp_phone").val());
+
+
+           
+              }
+              else {
+                console.log("No체크")
+                $("#mbsp_name").val("");
+                $("#mbsp_email").val("");
+                $("#mbsp_zipcode").val("");
+                $("#mbsp_addr").val("");
+                $("#mbsp_deaddr").val("");
+                $("#mbsp_phone").val("");
+              }
+
+            })
 
    
 
