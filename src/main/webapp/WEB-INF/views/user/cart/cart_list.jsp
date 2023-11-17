@@ -66,10 +66,11 @@
       </tr>
     </thead>
     <tbody>
+      <!--/user/cart/imageDisplay?dateFolderName=${order_info[status.index].pro_up_folder }&fileName=${order_info[status.index].pro_img}-->
       <c:forEach items="${cart_list }" var="cartDTO" varStatus="status">
-      <tr>
+      <tr>  
         <td><input type="checkbox" name="cart_code" id="cart_code" value="${cartDTO.cart_code}"></td>
-     <td>  <img width="100%" height="200" src="/user/product/imageDisplay?dateFolderName=${productVO.pro_up_folder }&fileName=${productVO.pro_img}"></td>
+     <td>  <img width="100%" height="200" src="/user/product/imageDisplay?dateFolderName=${pro_list[status.index].pro_up_folder}&fileName=${pro_list[status.index].pro_img}"></td>
         <td>${cartDTO.pro_name }</td>
         <td><span id="unitPrice">${cartDTO.pro_price}</span></td>
         <td><input type="number" name="cart_amount" value="${cartDTO.cart_amount }" style="width: 35px;"> <button type="button" name="btn_cart_amount_change" class="btn btn-danger">변경</button></td>
@@ -187,11 +188,11 @@
     })
 
     $("button[name='check_del']").on("click",function() {
+      if(!confirm("선택한 장바구니를 삭제하겠습니까?"))return;
       let cur_btn_delete = $(this);
       let cart_code2 = $(this).parent().parent().parent().parent().find("input[name = 'cart_code']").val()
       let cart_code = document.getElementById("cart_code");
-      if(cart_code.checked) {
-        if(!confirm("선택한 장바구니를 삭제하겠습니까?"))return;
+      if("input[name ='cart_code']:checked") {
         location.href='/user/cart/cart_list_del?cart_code=' + cart_code2;
       }
 

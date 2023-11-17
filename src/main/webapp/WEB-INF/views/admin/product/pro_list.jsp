@@ -413,7 +413,6 @@ desired effect
   });
 
   $(".btn_pro_del").on("click",function(){
-  
 
     let pro_name = $(this).parent().parent().find(".pro_name").text();
   if(!confirm(pro_name + "을삭제 하시겠습니까?")) return;

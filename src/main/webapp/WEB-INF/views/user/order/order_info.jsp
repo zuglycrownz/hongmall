@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
   <head>
@@ -80,8 +80,8 @@
     <tfoot>
 
  <tr>
-        <td colspan="8" style="text-align: right;">
-          주문금액 : <span id="order_price">${order_price}</span>
+        <td colspan="8" style="text-align: right;">상품 총<span id="cart_price_count">${fn:length(order_info)-2}</span>
+          주문금액 : <span id="cart_total_price">${order_price}</span>
         </td>
       </tr>
       <tr>
@@ -167,7 +167,7 @@
   <div class="form-group row">
     <label for="sample2_postcode" class="col-2">우편번호</label>
     <div class="col-8">
-      <input type="text" class="form-control" name="mbsp_zipcode" id="mbsp_zipcode" placeholder="우편번호...">
+      <input type="text" class="form-control" name="mbsp_zipcode" id="sample2_postcode" placeholder="우편번호...">
     </div>
     <div class="col-2">
       <button type="button" onclick="sample2_execDaumPostcode()" class="btn btn-outline-info">우편번호 찾기</button>
@@ -176,13 +176,13 @@
   <div class="form-group row">
     <label for="sample2_address" class="col-2">기본주소</label>
     <div class="col-10">
-      <input type="text" class="form-control" name="mbsp_addr" id="mbsp_addr" placeholder="기본주소입력...">
+      <input type="text" class="form-control" name="mbsp_addr" id="sample2_address" placeholder="기본주소입력...">
     </div>
   </div>
   <div class="form-group row">
     <label for="sample2_detailAddress" class="col-2">상세주소</label>
     <div class="col-10">
-      <input type="text" class="form-control" name="mbsp_deaddr" id="mbsp_deaddr" placeholder="상세주소입력...">
+      <input type="text" class="form-control" name="mbsp_deaddr" id="sample2_detailAddress" placeholder="상세주소입력...">
       <input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
     </div>
   </div>
@@ -197,8 +197,8 @@
     <div class="form-group row">
       <label for="mbsp_phone" class="col-2">결제방법</label>
       <class="col-10">
-        <input type="radio" name="mbsp_phone" id="mbsp_phone" >무통장입금<br>
-        <input type="radio" name="mbsp_phone" id="mbsp_phone" ><img src="/kakaopay/payment_icon_yellow_small.png"><br>
+        <input type="radio" name="paymethod" value="nobank" >무통장입금<br>
+        <input type="radio" name="paymethod" value="kakaopay" ><img src="/kakaopay/payment_icon_yellow_small.png"><br>
       </div>
     </div>
         </fieldset>
@@ -206,7 +206,7 @@
     </fieldset>
   </div>
   <div class="form-group text-center">
-    <button class="btn btn-primary">주문및결제하기</button>
+    <button type="button" class="btn btn-primary" id="btn_order">주문및결제하기</button>
   </div>
     </form>
     </div>
@@ -315,8 +315,9 @@
               $(".unitTotalprice").each(function() {
                 sumPrice += Number($(this).text()); 
               });
-              $("#order_price").text(sumPrice);
+              $("#cart_total_price").text(sumPrice);
             }
+
             fn_cart_sum_price()
 
             $("#same").on("click",function() {
@@ -324,9 +325,9 @@
               if($("#same").is(":checked")) {
                 $("#mbsp_name").val($("#b_mbsp_name").val());
                 $("#mbsp_email").val($("#b_mbsp_email").val());
-                $("#mbsp_zipcode").val($("#b_mbsp_zipcode").val());
-                $("#mbsp_addr").val($("#b_mbsp_addr").val());
-                $("#mbsp_deaddr").val($("#b_mbsp_deaddr").val());
+                $("#sample2_postcode").val($("#b_mbsp_zipcode").val());
+                $("#sample2_address").val($("#b_mbsp_addr").val());
+                $("#sample2_detailAddress").val($("#b_mbsp_deaddr").val());
                 $("#mbsp_phone").val($("#b_mbsp_phone").val());
 
 
@@ -342,9 +343,40 @@
                 $("#mbsp_phone").val("");
               }
 
-            })
+            });
 
-   
+
+
+
+
+            $("#btn_order").on("click",function() {
+
+                console.log($("input[name ='paymethod']:checked").val());
+              $.ajax({
+                url:'/user/order/orderPay',
+                type :'get',
+                data:{
+                  paymethod : $("input[name ='paymethod']:checked").val(),
+                  ord_name: $("#mbsp_name").val(),
+                  ord_addr_zipcode: $("input[name='mbsp_zipcode']").val(),
+                  ord_addr_basic: $("input[name='mbsp_addr']").val(),
+                  ord_addr_detail:$("input[name='mbsp_deaddr']").val() ,
+                  ord_tel:$("#mbsp_phone").val() ,
+                  ord_price :1000, //$("#cart_total_price").text(),
+                  totalprice :1000, //$("#cart_total_price").text(),
+                },
+                dataType:'json',
+                success : function(response) {
+                console.log("응답" +  response);
+             
+
+                alert(response.next_redirect_pc_url);
+                location.href =response.next_redirect_pc_url;
+
+                }
+              })
+
+            })
 
       });
 

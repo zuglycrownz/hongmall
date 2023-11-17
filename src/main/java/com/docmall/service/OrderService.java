@@ -1,12 +1,13 @@
 package com.docmall.service;
 
-import java.util.List;
-
-import com.docmall.domain.ProductVO;
-import com.docmall.dto.CartDTOList;
+import com.docmall.domain.OrderVO;
 
 public interface OrderService {
 	
+	int getOrderSeq();
 	
-	List<ProductVO> pro_list();
+//	List<ProductVO> pro_list();
+	
+	void order_insert(OrderVO o_vo);
+	
 }
