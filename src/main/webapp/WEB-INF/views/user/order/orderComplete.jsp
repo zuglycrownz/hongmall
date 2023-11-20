@@ -52,7 +52,7 @@
 
 <div class="container">
 
-  <h3>카카오 결제가 완료되었습니다.</h3>
+  <h3>주문이 완료되었습니다.</h3>
 
   <%@include file="/WEB-INF/views/comm/footer.jsp" %>
 </div>

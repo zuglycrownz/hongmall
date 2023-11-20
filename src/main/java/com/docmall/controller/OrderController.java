@@ -5,6 +5,7 @@ import java.util.List;
 import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,7 +77,7 @@ public class OrderController {
 		//ord_status,payment_status 정보존재안함
 	}
 	@GetMapping(value = "/orderPay",produces="application/json")
-	public @ResponseBody ReadyResponse payReady(OrderVO o_vo,/*OrderDetailVO od_vo,PaymentVO o_vo*/String paymethod,int totalprice,HttpSession session) throws Exception {
+	public @ResponseBody ReadyResponse payReady(OrderVO o_vo,PaymentVO p_vo,String paymethod,int totalprice,HttpSession session) throws Exception {
 		
 
 		String mbsp_id = ((MemberVO) session.getAttribute("loginStatus")).getMbsp_id();
@@ -85,7 +86,14 @@ public class OrderController {
 		log.info("결제방법 :"  + paymethod);
 		log.info("주문정보 :" + o_vo );
 		
+		
 		Long ord_code = (long)orderService.getOrderSeq();
+		
+		p_vo.setOrd_code(ord_code);
+		p_vo.setMbsp_id(mbsp_id);
+		p_vo.setPay_method("카카오페이");
+		p_vo.setPay_tot_price(totalprice);
+		
 		o_vo.setOrd_code(ord_code);
 		o_vo.setOrd_status("주문완료");
 		o_vo.setPayment_status("결제완료");
@@ -102,7 +110,7 @@ public class OrderController {
 		ReadyResponse readyResponse = kakaoPayServiceImpl.payReady(o_vo.getOrd_code(), itemName, totalprice, mbsp_id, totalprice);
 		
 		
-		orderService.order_insert(o_vo); //주문,주문상세 정보저장,장바구니 삭제
+		orderService.order_insert(o_vo,p_vo); //주문,주문상세 정보저장,장바구니 삭제
 		
 		log.info("결제고유번호" + readyResponse.getTid());
 		log.info("결제요청URL" + readyResponse.getNext_redirect_pc_url());
@@ -143,5 +151,48 @@ public class OrderController {
 	public void orderFail() {
 		
 	}
+	
+	@GetMapping("/nobank")
+	public ResponseEntity<String> nobank(OrderVO o_vo,PaymentVO p_vo,String paymethod,int totalprice,HttpSession session) {
+		
+		ResponseEntity<String> entity = null;
+		String mbsp_id = ((MemberVO) session.getAttribute("loginStatus")).getMbsp_id();
+		o_vo.setMbsp_id(mbsp_id);
+		
+
+		
+		Long ord_code = (long)orderService.getOrderSeq();
+		o_vo.setOrd_code(ord_code);
+		o_vo.setOrd_status("주문완료");
+		o_vo.setPayment_status("결제완료");
+		
+		
+		p_vo.setPay_method("무통장입금");
+		p_vo.setOrd_code(ord_code);
+		p_vo.setMbsp_id(mbsp_id);
+		p_vo.setPay_tot_price(totalprice);
+		p_vo.setPay_nobank_price(totalprice);
+		//결제 3가지 콤보네이션
+		
+		log.info("결제방법 :"  + paymethod);
+		log.info("주문정보 :" + o_vo );
+		log.info("주문정보 :" + p_vo );
+		
+		List<CartDTOList> cart_list = cartservice.cart_list(mbsp_id);
+		
+
+		
+		String itemName = cart_list.get(0).getPro_name() + "외" + String.valueOf(cart_list.size() - 1) + "건"	;	
+		//결제준비요청
+		ReadyResponse readyResponse = kakaoPayServiceImpl.payReady(o_vo.getOrd_code(), itemName, totalprice, mbsp_id, totalprice);
+		
+		
+		orderService.order_insert(o_vo,p_vo); //주문,주문상세 정보저장,장바구니 삭제
+		
+		entity = new ResponseEntity<String>("success",HttpStatus.OK);
+		
+		return entity;
+	}
+	
 	
 }

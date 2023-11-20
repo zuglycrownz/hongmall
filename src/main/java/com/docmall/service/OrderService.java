@@ -1,6 +1,7 @@
 package com.docmall.service;
 
 import com.docmall.domain.OrderVO;
+import com.docmall.domain.PaymentVO;
 
 public interface OrderService {
 	
@@ -8,6 +9,6 @@ public interface OrderService {
 	
 //	List<ProductVO> pro_list();
 	
-	void order_insert(OrderVO o_vo);
+	void order_insert(OrderVO o_vo,PaymentVO p_vo);
 	
 }

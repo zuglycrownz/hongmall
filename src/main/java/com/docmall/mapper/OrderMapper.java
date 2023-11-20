@@ -3,6 +3,7 @@ package com.docmall.mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.docmall.domain.OrderVO;
+import com.docmall.domain.PaymentVO;
 
 public interface OrderMapper {
 
@@ -19,6 +20,8 @@ public interface OrderMapper {
 	
 	//장바구니 내역 삭제
 	void cart_del(String mbsp_id);
+	
+	void payment_insert(PaymentVO p_vo);
 	
 	// 위에 세개는 하나.
 }

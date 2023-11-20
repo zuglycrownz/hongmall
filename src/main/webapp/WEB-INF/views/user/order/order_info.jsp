@@ -80,7 +80,7 @@
     <tfoot>
 
  <tr>
-        <td colspan="8" style="text-align: right;">상품 총<span id="cart_price_count">${fn:length(order_info)-2}</span>
+        <td colspan="8" style="text-align: right;">상품 총<span id="cart_price_count">${fn:length(order_info)-4}</span>
           주문금액 : <span id="cart_total_price">${order_price}</span>
         </td>
       </tr>
@@ -197,9 +197,26 @@
     <div class="form-group row">
       <label for="mbsp_phone" class="col-2">결제방법</label>
       <class="col-10">
-        <input type="radio" name="paymethod" value="nobank" >무통장입금<br>
-        <input type="radio" name="paymethod" value="kakaopay" ><img src="/kakaopay/payment_icon_yellow_small.png"><br>
+        <input type="radio" name="paymethod" id="paymethod1" value="nobank" >무통장입금<br>
+        <input type="radio" name="paymethod" id="paymethod2" value="kakaopay" ><img src="/kakaopay/payment_icon_yellow_small.png"><br>
+
       </div>
+      <div class="form-group row" id="nobank_info" style="display: none;">
+        <label for="mbsp_phone" class="col-2">무통장입금정보</label>
+        <class="col-10">
+          은행명
+          <select name="pay_nobank" id="pay_nobank">
+      <option value="123-123-123">KEB하나은행</option>
+      <option value="456-456-456">국민은행</option>
+      <option value="789-789-789">신한은행</option>
+      <option value="200-200-200">SC제일은행</option>
+
+          </select>
+        계좌번호 <input type="text" name="pay_bankaccount" id="pay_bankaccount">
+        예금주 <input type="text" name="pay_nobank_user" id="pay_nobank_user">
+        메모<textarea cols="50" rows="3" name="pay_memo" id="pay_memo"></textarea>
+          
+        </div>
     </div>
         </fieldset>
 
@@ -350,8 +367,9 @@
 
 
             $("#btn_order").on("click",function() {
-
+              let paymethod = $("input[name ='paymethod']:checked").val();
                 console.log($("input[name ='paymethod']:checked").val());
+                if(paymethod === 'kakaopay') {
               $.ajax({
                 url:'/user/order/orderPay',
                 type :'get',
@@ -375,7 +393,58 @@
 
                 }
               })
+            }
+            else if(paymethod === 'nobank') {
+              $.ajax({
+                url:'/user/order/nobank',
+                type :'get',
+                data:{
+                  paymethod : $("input[name ='paymethod']:checked").val(),
+                  ord_name: $("#mbsp_name").val(),
+                  ord_addr_zipcode: $("input[name='mbsp_zipcode']").val(),
+                  ord_addr_basic: $("input[name='mbsp_addr']").val(),
+                  ord_addr_detail:$("input[name='mbsp_deaddr']").val() ,
+                  ord_tel:$("#mbsp_phone").val() ,
+                  ord_price :1000, //$("#cart_total_price").text(),
+                  totalprice :1000, //$("#cart_total_price").text(),
+                  pay_nobank_user :$("#pay_nobank_user").val(),
+                  pay_nobank :$("#pay_nobank option:selected").text(),
+                  pay_bankaccount :$("#pay_bankaccount").val(),
+                  pay_memo :$("#pay_memo").val()
+                  
+                },
+                dataType:'text',
+                success : function(result) {
+                console.log("응답" +  result);
+                  if(result == 'success'){
+                    alert("무통장으로 입금 완료")
+                  }
 
+                location.href = '/user/order/orderComplete'
+             
+
+                }
+              });
+            }
+
+
+            })
+            $("input[name ='paymethod']").on("click",function() {
+              let paymethod = $("input[name ='paymethod']:checked").val();
+              console.log(paymethod);
+
+              if(paymethod === 'nobank') {
+                $("#nobank_info").show();
+              }
+              else if(paymethod === 'kakaopay') {
+                $("#nobank_info").hide();
+              }
+
+            });
+
+            $("pay_nobank").on("change",function() {
+
+              $("#pay_bankaccount").val($(this).val())
             })
 
       });

@@ -34,6 +34,23 @@ where  mbsp_id = #{mbsp_id}
 
 </insert>
 
+<insert id="payment_insert" parameterType="com.docmall.domain.PaymentVO">
+insert into payment(
+pay_code, ORD_CODE, MBSP_ID, PAY_METHOD, PAY_DATE, PAY_TOT_PRICE
+<if test="pay_nobank_price != null and pay_nobank_price !=''">
+,PAY_NOBANK_PRICE,PAY_NOBANK_USER, PAY_NOBANK, PAY_MEMO,pay_bankaccount
+</if>
+)
+values(SEQ_PAYMENT_CODE.nextval,#{ord_code},#{mbsp_id},#{pay_method},sysdate,#{pay_tot_price}
+
+<if test="pay_nobank_price != null and pay_nobank_price !=''">
+,#{pay_nobank_price},#{pay_nobank_user},#{pay_nobank},#{pay_memo},#{pay_bankaccount}
+</if>
+)
+
+</insert>
+
+
 <delete id="cart_del" parameterType="String">
 
 delete from 
