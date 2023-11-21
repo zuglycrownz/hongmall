@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.docmall.domain.CartVO;
 import com.docmall.domain.MemberVO;
 import com.docmall.domain.OrderVO;
 import com.docmall.domain.PaymentVO;
@@ -76,6 +77,16 @@ public class OrderController {
 		
 		//ord_status,payment_status 정보존재안함
 	}
+	@GetMapping("/order_ready")
+	public String order_ready(CartVO vo,HttpSession session) throws Exception {
+		String mbsp_id = ((MemberVO) session.getAttribute("loginStatus")).getMbsp_id();
+		vo.setMbsp_id(mbsp_id);
+		
+		cartservice.cart_add(vo);
+		
+		return "redirect:/user/order/order_info";
+	}
+	
 	@GetMapping(value = "/orderPay",produces="application/json")
 	public @ResponseBody ReadyResponse payReady(OrderVO o_vo,PaymentVO p_vo,String paymethod,int totalprice,HttpSession session) throws Exception {
 		

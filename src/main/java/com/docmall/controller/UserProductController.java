@@ -44,10 +44,10 @@ public class UserProductController {
 	}
 	*/
 	// 매핑주소2: /user/product/pro_list
-	@GetMapping("/pro_list")
+	@GetMapping("/pro_list")  //integer cg_code를@modelattribute cg_code이름으로 jsp로보낸다.
 	public String pro_list(Criteria cri ,@ModelAttribute("cg_code") Integer cg_code, @ModelAttribute("cg_name") String cg_name, Model model) throws Exception {
 		
-		cri.setAmount(8);
+		cri.setAmount(2);
 		
 		
 		List<ProductVO> pro_list = userProductService.pro_list(cg_code, cri);
@@ -72,5 +72,17 @@ public class UserProductController {
 	public ResponseEntity<byte[]> imageDisplay(String dateFolderName, String fileName) throws Exception {
 		
 		return FileUtils.getFile(uploadPath + dateFolderName, fileName);
+	}
+	
+	
+	@GetMapping("/pro_detail")																					//pro_list에 액션폼(히든)에서 받아옴
+	public void pro_detail(Criteria cri,Integer pro_num, Model model,@ModelAttribute("cg_code")Integer cg_code,@ModelAttribute("cg_name")String cg_name) throws Exception {
+	log.info("페이징정보 :" + cri);
+	log.info("상품코드 :" + pro_num);
+	
+	ProductVO productVO = userProductService.pro_detail(pro_num);
+	productVO.setPro_up_folder(productVO.getPro_up_folder().replace("\\", "/"));
+	model.addAttribute("productVO",productVO);
+		
 	}
 }

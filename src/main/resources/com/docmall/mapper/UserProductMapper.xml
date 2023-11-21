@@ -27,4 +27,15 @@ select count(*) from product_tbl where
 cg_code =#{cg_code}
 </select>
 
+
+<select id="pro_detail" resultType="com.docmall.domain.ProductVO" parameterType="Integer">
+select
+pro_num, CG_CODE, PRO_NAME, PRO_PRICE, PRO_DISCOUNT, PRO_PUBLISHER, PRO_CONTENT, PRO_UP_FOLDER, PRO_IMG, PRO_AMOUNT, PRO_BUY, PRO_DATE, PRO_UPDATEDATE
+ from 
+ 	product_tbl
+  where
+	pro_num =#{pro_num}
+
+</select>
+
 </mapper>

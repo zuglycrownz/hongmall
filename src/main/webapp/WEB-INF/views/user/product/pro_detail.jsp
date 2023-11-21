@@ -16,7 +16,10 @@
     <!-- Bootstrap core CSS -->
 <%@include file="/WEB-INF/views/comm/plugIn2.jsp" %>
 <%@include file="/WEB-INF/views/comm/plugIn.jsp" %>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 
     <!-- Favicons -->
@@ -52,28 +55,73 @@
 </div>
 
 <div class="container">
-  <div class="card-deck mb-3 text-center row">
-    <c:forEach items="${pro_list}" var="productVO">
-    <div class="col-md-3">
-	    <div class="card mb-4 shadow-sm">
-            <img class="btn_pro_img" data-pro_num="${productVO.pro_num}" width="100%" height="200" src="/user/product/imageDisplay?dateFolderName=${productVO.pro_up_folder }&fileName=${productVO.pro_img}">
+ <div class="card-deck mb-3 text-center row">
+<div class="col-md-6">
+상품이미지
+<img class="btn_pro_img" data-pro_num="${productVO.pro_num}" width="100%" height="200" src="/user/product/imageDisplay?dateFolderName=${productVO.pro_up_folder }&fileName=${productVO.pro_img}">
+</div>
+<div class="col-md-6">
 
-            <div class="card-body">
-              <p class="card-text btn_pro_img" data-pro_num="${productVO.pro_num}">${productVO.pro_name }</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" name="btn_cart_add" data-pro_num="${productVO.pro_num}"  class="btn btn-sm btn-outline-secondary">Cart</button>
-                  <button type="button" name="btn_buy" class="btn btn-sm btn-outline-secondary">Buy</button>
-                </div>
-                <small class="text-muted">
-                	<fmt:formatNumber type="currencyt" pattern="₩#,###" value="${productVO.pro_price }"></fmt:formatNumber>
-                </small>
-              </div>
-            </div>
-          </div>
-    </div>
-    </c:forEach>
+
+<div class="row text-left" >
+  <div class="col">
+
+    상품이름 : ${productVO.pro_name}
+
   </div>
+</div>
+<div class="row text-left">
+  <div class="col">
+
+    가격: <span id="unit_price">${productVO.pro_price}</span>
+
+  </div>
+</div>
+<div class="row text-left">
+  <div class="col">
+
+    수량: <input type="number" id="btn_quantity" value="1" style="width: 50px;"/>
+
+  </div>
+</div>
+<div class="row text-left">
+  <div class="col">
+
+    총상품금액: <span id="tot_price">${productVO.pro_price}</span>
+
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col">
+  <button type="button" class="btn btn-primary" name="btn_order" data-pro_num="${productVO.pro_num}">구매하기</button>
+
+  </div>
+
+  <div class="col">
+  <button type="button" class="btn btn-primary" data-pro_num="${productVO.pro_num}" name="btn_cart_add">장바구니</button>
+
+    </div>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">상품설명</a></li>
+    <li><a href="#tabs-2">상품후기</a></li>
+  </ul>
+  <div id="tabs-1">
+    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+  </div>
+  <div id="tabs-2">
+    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+  </div>
+</div>
+</div>
+</div>
+ </div>
 <div class="row text-center">
 	<div class="col-md-12">
 			
@@ -91,32 +139,6 @@
 		
 	  </form>
 
-	<nav aria-label="...">
-	<ul class="pagination">
-		<!-- 이전 표시여부 -->
-		<c:if test="${pageMaker.prev }">
-			<li class="page-item">
-				<a href="${pageMaker.startPage - 1 }" class="page-link movepage">Previous</a>
-			</li>
-		</c:if>
-		<!-- 페이지번호 출력 -->
-		<!-- 1	2	3	4	5 6	7	8	9	10  [다음] -->
-		<!-- [이전] 11	12	13	14	15 16	17	18	19	20   -->
-		<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num">
-			<li class='page-item ${pageMaker.cri.pageNum ==  num ? "active":"" }'aria-current="page">
-				<a class="page-link movepage" href="${num }" data-page="${num }">${num }</a>
-			</li>
-		</c:forEach>
-		
-		<!--  다음 표시여부 -->
-		<c:if test="${pageMaker.next }">
-			<li class="page-item">
-			<a href="${pageMaker.endPage + 1 }" class="page-link movepage" href="#">Next</a>
-			</li>
-		</c:if>
-			
-		</ul>
-		</nav>
 	</div>
 </div>
 
@@ -145,7 +167,7 @@
         $.ajax({
           url :'/user/cart/cart_add',
           type:'post',
-          data:{pro_num : $(this).data("pro_num"),cart_amount :1},
+          data:{pro_num : $(this).data("pro_num"),cart_amount :$("#btn_quantity").val()},
           success : function(result) {
           if(result == "success") {
             alert("장바구니에 추가됨");
@@ -159,6 +181,13 @@
         })
           
       });
+      $("button[name ='btn_order']").on("click",function() {
+        console.log("hi");
+  let url='/user/order/order_ready?pro_num=' +$(this).data("pro_num") + '&cart_amount=' +$("#btn_quantity").val()+''
+  location.href = url
+
+      })
+
       //상품 이미지 또는 상품명 클릭시 상세로 보내는 작업
       $(".btn_pro_img").on("click",function() {
 
@@ -169,10 +198,20 @@
         actionForm.append("<input type='hidden' name='pro_num'  value='" + pro_num + "' />")
         actionForm.submit();
       })
-
+      //수량변경 
+  $("#btn_quantity").on("click",function() {
+  let tot_price = $("#unit_price").text() * $("#btn_quantity").val(); //span = text, input = val 더하기면 paresint해야함
+  $("#tot_price").text(tot_price);
+})
 	});
 
   </script>  
+
+    <script>
+  $( function() {
+    $("#tabs-1").tabs();
+  });
+  </script>
   </body>
 </html>
     
