@@ -12,20 +12,28 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.101.0">
     <title>Pricing example · Bootstrap v4.6</title>
-
-    <!-- Bootstrap core CSS -->
-<%@include file="/WEB-INF/views/comm/plugIn2.jsp" %>
-<%@include file="/WEB-INF/views/comm/plugIn.jsp" %>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
+    
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 
+<style>  
+  body {
+	font-family: Arial, Helvetica, sans-serif;
+}
 
-    <!-- Favicons -->
+table {
+	font-size: 1em;
+}
 
-
-    <style>
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -40,11 +48,23 @@
           font-size: 3.5rem;
         }
       }
+      .ui-draggable, .ui-droppable{
+        background-position: top;
+      }
+      p#star_rv_score a.rv_score {
+        font-size: 22px;
+        text-decoration: none;
+        color: lightgray;
+      }
+      p#star_rv_score a.rv_score.on {
+        color: yellow;
+      }
     </style>
 
    
   </head>
   <body>
+    
     
 <%@include file="/WEB-INF/views/comm/header.jsp" %>
 
@@ -116,7 +136,11 @@
     <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
   </div>
   <div id="tabs-2">
-    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+    <p>.</p>
+    <div class="row">
+<div class="col-md-12 text-right"></div>
+      <button type="button" id="btn_review_write" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#review_model" data-bs-whatever="@mdo" >상품후기</button>
+    </div>
   </div>
 </div>
 </div>
@@ -203,15 +227,119 @@
   let tot_price = $("#unit_price").text() * $("#btn_quantity").val(); //span = text, input = val 더하기면 paresint해야함
   $("#tot_price").text(tot_price);
 })
-	});
+
+
+  $("#btn_review_write").on("click",function() {
+    $("#review_model").model('show');
+
+  })
+
+  $("p#star_rv_score a.rv_score").on("click",function(e) {
+  e.preventDefault();
+
+  $(this).parent().children().removeClass("on");
+  $(this).addClass("on").prevAll("a").addClass("on");
+
+  });
+let reviewPage = 1;
+let url ="/user/review/list" + pro_num + "/" + reviewPage;
+
+  $("#btn_review_save").on("click",function() {
+    let rew_score = 0;
+    let rew_content = $("#rew_content").val();
+
+    $("p#star_rv_score a.rv_score").each(function(index,item) {
+      if($(this).attr("class") == "rv_score on"){
+        rew_score += 1;
+      }
+      
+    })
+    if(rew_score == 0) {
+      alert("별 평점을 선택하세요");
+      return;
+    }
+    //후기 체크
+    if(rew_content == "") {
+      alert("상품명을 작성하세요");
+      return
+    }
+
+    let review_data = {pro_num : $(this).data("pro_num"), rew_content : rew_content, rew_score : rew_score} 
+    // JSON.stringify(review_data)
+    $.ajax({
+
+      url:'/user/review/new',
+      headers: {
+        "Content-Type" : "application/json", "X-HTTP-Method-Overrid" : "POST"
+      },
+      type : 'post',
+      data: JSON.stringify(review_data), //자바 오브젝트 -> JSON으로 변환
+      dataType:'text',
+      success : function(result) {
+      if(result == 'success') {
+        alert("상품명이 등록됨");
+
+        $('#review_model').model('hide');
+      }
+
+      }
+
+
+    })
+
+    
+  })
+	}); //end
+
+
 
   </script>  
 
     <script>
-  $( function() {
-    $("#tabs-1").tabs();
-  });
+ $( document ).ready(function() {
+        $("#tabs").tabs();
+        if ($("#tabs-1").val() == null) {
+            $("#tabs").css("display", "none");
+        }
+        $("#tabs-2").change(function () {
+            $("#tabs").css("display", "block");
+        });
+});
   </script>
   </body>
+ 
+<!--상품후기-->
+<div class="modal fade" id="review_model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">별평점</label>
+            <p id="star_rv_score">
+              <a class="rv_score" href="#">☆</a>
+              <a class="rv_score" href="#">☆</a>
+              <a class="rv_score" href="#">☆</a>
+              <a class="rv_score" href="#">☆</a>
+              <a class="rv_score" href="#">☆</a>
+            </p>          
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">내용</label>
+            <textarea class="form-control" id="rew_content"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="btn_review_save" class="btn btn-primary" data-pro_num="${productVO.pro_num}" >상품후기저장</button>
+      </div>
+    </div>
+  </div>
+</div>
 </html>
     
