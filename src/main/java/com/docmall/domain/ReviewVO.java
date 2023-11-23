@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ReviewVO {
 
-	private Long rev_num;
+	private Long rew_num;
 	private String mbsp_id;
 	private int pro_num;
 	private String rew_content;

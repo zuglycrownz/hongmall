@@ -1,6 +1,8 @@
 package com.docmall.controller;
 
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.docmall.domain.MemberVO;
+import com.docmall.domain.PageDTO;
 import com.docmall.domain.ReviewVO;
+import com.docmall.dto.Criteria;
 import com.docmall.service.ReviewService;
 
 import lombok.RequiredArgsConstructor;
@@ -55,8 +59,27 @@ public class ReviewController {
 	//전통적인방식 /list?pro_num=123&page=1, Rest API개발이후 list/123/1
 	@GetMapping("/list/{pro_num}/{page}")
 	public ResponseEntity<Map<String, Object>> list(@PathVariable("pro_num") Integer pro_num,@PathVariable("page") int page) throws Exception {
-		ResponseEntity<Map<String, Object>> entity = null;
 		
+		ResponseEntity<Map<String, Object>> entity = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		//상품후기목록
+		Criteria cri = new Criteria();
+		cri.setPageNum(page);
+		//db연동작업
+		
+		List<ReviewVO> list = reviewService.list(pro_num, cri);
+		
+
+		int listCount = reviewService.listCount(pro_num);
+		PageDTO pageMaker = new PageDTO(cri, listCount);
+		
+		map.put("list", list);
+		map.put("pageMaker", pageMaker);
+		
+
+		//map ->json으로 변환
+		entity = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		
 		return entity;
 	}
