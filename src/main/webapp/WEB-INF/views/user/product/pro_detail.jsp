@@ -28,6 +28,7 @@
       <th scope="col">내용</th>
       <th scope="col">별점</th>
       <th scope="col">날짜</th>
+      <th scope="col">비고</th>
     </tr>
   </thead>
   <tbody>
@@ -37,6 +38,7 @@
       <td>{{rew_content}}</td>
       <td>{{Starrating rew_score}}</td>
       <td>{{convertDate rew_regdate}}</td>
+      <td>{{authControlYiew mbsp_id rew_num}}</td>
     </tr>
     {{/each}}
   </tbody>
@@ -145,53 +147,54 @@
           </div>
           <div id="tabs-proreview">
             <p>상품후기 목록</p>
+            <div class="row text-center">
+              <div class="col-md-12">
+              <!--1)페이지번호 클릭할 때 사용  [이전]  1   2   3   4   5 [다음]  -->
+              <!--2)목록에서 상품이미지 또는 상품명 클릭할 때 사용   -->
+                <form id="actionForm" action="/user/review/list/{pro_num}/{page}" method="get">
+                 <input type="hidden" name="pageNum" id="pageNum" value="${pageMaker.cri.pageNum}" />
+                 <input type="hidden" name="amount"  id="amount" value="${pageMaker.cri.amount}" />
+                 <input type="hidden" name="type" id="type" value="${pageMaker.cri.type}" />
+                 <input type="hidden" name="keyword" id="keyword" value="${pageMaker.cri.keyword}" />
+                 
+                 <input type="hidden" name="pro_num" id="pro_num" value="${pro_num}" />
+                 <input type="hidden" name="cg_name" id="cg_name" value="${cg_name}" />
+                 
+                </form>
+                 <nav aria-label="...">
+                 <ul class="pagination">
+                    <!-- 이전 표시여부 -->
+                    <c:if test="${pageMaker.prev }">
+                       <li class="page-item">
+                          <a href="${pageMaker.startPage - 1 }" class="page-link movepage">Previous</a>
+                       </li>
+                    </c:if>
+
+                    
+                    <!--  다음 표시여부 -->
+                    <c:if test="${pageMaker.next }">
+                       <li class="page-item">
+                       <a href="${pageMaker.endPage + 1 }" class="page-link movepage" href="${pageMaker.endPage + 1 }">Next</a>
+                       </li>
+                    </c:if>
+                    
+                 </ul>
+                 </nav>
+              </div>
+           </div>
             <div class="row">
               <div class="col-md-12" id="review_list">
 
 
               </div>
-                <div class="row text-center">
-                  <div class="col-md-12">
-                  <!--1)페이지번호 클릭할 때 사용  [이전]  1   2   3   4   5 [다음]  -->
-                  <!--2)목록에서 상품이미지 또는 상품명 클릭할 때 사용   -->
-                    <form id="actionForm" action="" method="get">
-                     <input type="hidden" name="pageNum" id="pageNum" value="${pageMaker.cri.pageNum}" />
-                     <input type="hidden" name="amount"  id="amount" value="${pageMaker.cri.amount}" />
-                     <input type="hidden" name="type" id="type" value="${pageMaker.cri.type}" />
-                     <input type="hidden" name="keyword" id="keyword" value="${pageMaker.cri.keyword}" />
-                     
-                     <input type="hidden" name="cg_code" id="cg_code" value="${cg_code}" />
-                     <input type="hidden" name="cg_name" id="cg_name" value="${cg_name}" />
-                     
-                    </form>
-                     <nav aria-label="...">
-                     <ul class="pagination">
-                        <!-- 이전 표시여부 -->
-                        <c:if test="${pageMaker.prev }">
-                           <li class="page-item">
-                              <a href="${pageMaker.startPage - 1 }" class="page-link movepage">Previous</a>
-                           </li>
-                        </c:if>
-                        <!-- 페이지번호 출력 -->
-                        <!-- 1   2   3   4   5 6   7   8   9   10  [다음] -->
-                        <!-- [이전] 11   12   13   14   15 16   17   18   19   20   -->
-                        <c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num">
-                           <li class='page-item ${pageMaker.cri.pageNum ==  num ? "active":"" }'aria-current="page">
-                              <a class="page-link movepage" href="${num }" data-page="${num }">${num }</a>
-                           </li>
-                        </c:forEach>
-                        
-                        <!--  다음 표시여부 -->
-                        <c:if test="${pageMaker.next }">
-                           <li class="page-item">
-                           <a href="${pageMaker.endPage + 1 }" class="page-link movepage" href="${pageMaker.endPage + 1 }">Next</a>
-                           </li>
-                        </c:if>
-                        
-                     </ul>
-                     </nav>
-                  </div>
-               </div>
+              </div>
+              <div class="col-md-8 text-center" id="review_paging">
+
+
+              </div>
+              </div>
+              </div>
+
                 
               
               <div class="col-md-12 text-right">
@@ -309,6 +312,8 @@
                 // review_list
                                 //스프링정보,보여줄위치,보여줄거틀
                 printReviewList(data.list, $("#review_list"), $("#reviewTemplate"));
+                printpage(data.pageMaker, $("#review_paging"));
+                
       });
     }
 
@@ -318,9 +323,37 @@
       let reviewHtml = templateObj(reviewData);
       
       // 상품후기목록 위치를 참조하여, 추가
+
+
       $("#review_list").children().remove();
       target.append(reviewHtml);
     }
+    //페이징기능작업
+    let printpage = function(pageMaker,target) {
+      let pagingStr = '<nav aria-label ="Page navigation example">';
+        pagingStr += ' <ul class="pagination">'
+      if(pageMaker.prev) {
+
+        pagingStr += '<li class="page-item"><a class="page-link" href="#">' + ${pageMaker.startPage - 1} +'">Previon</a>';
+        pagingStr += '</ul>';
+        pagingStr += '</nav>';
+      }
+      if(pageMaker.next) {
+
+    pagingStr += '<li class="page-item"><a class="page-link" href="#">' + ${pageMaker.startPage + 1} +'">next</a>';
+    pagingStr += '</ul>';
+    pagingStr += '</nav>';
+    }
+      for(let i=pageMaker.startPage; i<=pageMaker.endPage; i++) {
+        let className = pageMaker.cri.pageNum == i ? "active" : "";
+        pagingStr += '<li class="page-item">' + className + '<a class="page-link" href="' + i + '">' + i + '</a>'
+
+
+      target.children().remove();
+      target.append(pagingStr);
+      }
+    }
+
     Handlebars.registerHelper("convertDate",function(reviewtime) {
 
       const dateObj = new Date(reviewtime);
@@ -353,6 +386,55 @@
         }
 
     return  star;
+    })
+    Handlebars.registerHelper("authControlYiew",function(mbsp_id,rew_num) {
+      let str ="";
+      let login_id ='${sessionScope.loginStatus.mbsp_id}';
+
+      //로그인한 사용자와 상품후기 등록 사용자가 동일한가
+      if(login_id == mbsp_id) {
+        str+= `<button type ="button" class="btn btn-info" data-rew_num="${rew_num}">[edit]</button>`
+        str+= `<button type ="button" name="btn_review_del" class="btn btn-danger" data-rew_num="${rew_num}">[delete]</button>`
+        console.log("에스티알"+str)
+        return new Handlebars.SafeString(str)
+      }
+
+      
+      $("#review_paging").on("click","nav ul a",function(e) {
+      e.preventDefault();
+
+      reviewPage = $(this).attr("href"); //상품후기 페이지번호 선택값
+
+       url = "/user/review/list/" + ${productVO.pro_num} + "/" + reviewPage;
+
+       getReviewInfo(url); //스프링에서 상품후기,페이지번호 데이타 가져오기
+
+        console.log("페이징번호");
+        reviewPage.remove();
+      })
+
+
+    })
+    $("#review_list").on("click","button[name='btn_review_del']",function() {
+      let rew_num = $(this).data("rew_num");
+      console.log(rew_num);
+      if(!confirm("상품후기를 삭제하겠습니까?")) return;
+      
+      $.ajax({
+                url: '/user/review/delete/' + rew_num,
+                headers: {
+                  "Content-Type" : "application/json", "X-HTTP-Method-Override" : "DELETE"
+                },
+                type: 'Delete',
+                dataType: 'text',
+                success : function(result) {
+                  if(result == 'success') {
+                    alert("상품평이 삭제됨");
+                    url = "/user/review/list/" + ${productVO.pro_num} + "/" + reviewPage;
+                  }
+                }
+              });
+
     })
 
             // 상품후기저장

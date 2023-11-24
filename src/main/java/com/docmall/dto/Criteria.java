@@ -18,7 +18,7 @@ public class Criteria {
 	private String keyword;
 	
 	public Criteria() {
-		this(1,2);
+		this(1,10);
 		System.out.println("Criteria 기본생성자 호출");
 	}
 	

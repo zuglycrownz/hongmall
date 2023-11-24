@@ -38,6 +38,13 @@ select count(*) from REVIEW_TBL where pro_num =#{pro_num}
 
 </select>
 
+<delete id="delete" parameterType="Long">
+	
+	delete from
+	review_tbl
+	where rew_num =#{rew_num}
 
+
+</delete>
 
 </mapper>

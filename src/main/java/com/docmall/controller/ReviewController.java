@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +66,8 @@ public class ReviewController {
 
 		//상품후기목록
 		Criteria cri = new Criteria();
+		
+		cri.setAmount(5);
 		cri.setPageNum(page);
 		//db연동작업
 		
@@ -84,4 +87,17 @@ public class ReviewController {
 		return entity;
 	}
 	
+	
+	@DeleteMapping("/delete/{rew_num}") ///user/review/delete/1
+	public ResponseEntity<String> deletEntity(@PathVariable("rew_num") Long rew_num)throws Exception {
+		ResponseEntity<String> entity = null;
+		
+		
+		reviewService.delete(rew_num);
+		entity = new ResponseEntity<String>("success",HttpStatus.OK);
+		
+		
+		
+		return entity;
+	}
 }
