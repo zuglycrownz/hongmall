@@ -47,4 +47,16 @@ select count(*) from REVIEW_TBL where pro_num =#{pro_num}
 
 </delete>
 
+
+<update id="review_modify" parameterType="com.docmall.domain.ReviewVO">
+
+UPdate
+review_tbl
+set
+rew_content = #{rew_content}, rew_score = #{rew_score}
+where
+rew_num = #{rew_num}
+
+
+</update>
 </mapper>

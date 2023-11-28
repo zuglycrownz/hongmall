@@ -34,11 +34,11 @@
   <tbody>
 {{#each .}}
     <tr>
-      <th scope="row">{{rew_num}}</th>
-      <td>{{rew_content}}</td>
-      <td>{{Starrating rew_score}}</td>
-      <td>{{convertDate rew_regdate}}</td>
-      <td>{{authControlYiew mbsp_id rew_num}}</td>
+      <th scope="row" class="rew_num">{{rew_num }}</th>
+      <td class="rew_content">{{rew_content}}</td>
+      <td class="rew_score">{{Starrating rew_score}}</td>
+      <td class="rew_regdate">{{convertDate rew_regdate}}</td>
+      <td >{{authControlYiew mbsp_id rew_num rew_score}}</td>
     </tr>
     {{/each}}
   </tbody>
@@ -285,10 +285,54 @@
                 
 
         // 상품후기 작성
+                $("#btn_review_close").on("click",function() {
+
+                  $('#review_modal').modal('hide');
+                })
+
             $("#btn_review_write").on("click", function() {
+
+              $("#btn_review_modify").hide();
+              $("#btn_review_save").show();
               $('#review_modal').modal('show');
 
             });
+
+            $("#btn_review_modify").on("click",function() {
+
+              let rew_num = $("#rew_num").text();
+              let rew_content = $("#rew_content").val();
+              let rew_score = 0;
+              $("p#star_rv_score a.rv_score").each(function(index, item) {
+                if($(this).attr("class") == "rv_score on") {
+                  rew_score += 1;
+
+                  
+                }
+
+              });
+              let review_data = {rew_num : rew_num,rew_content : rew_content,rew_score:rew_score};
+
+              $.ajax({
+                url: '/user/review/modify',
+                headers: {
+                  "Content-Type" : "application/json", "X-HTTP-Method-Override" : "PUT"
+                },
+                type: 'put',
+                data : JSON.stringify(review_data), // 데이터 포맷 자바스크립트 Object -> json으로 변환
+                dataType: 'text',
+                success : function(result) {
+                  if(result == 'success') {
+                    alert("상품평이 수정됨");
+                    $('#review_modal').modal('hide');
+                    // 상품평 목록 불러오는 작업.
+                    getReviewInfo(url);
+                  }
+                }
+              });
+            })
+
+
 
             // 별평점 클릭시. 별평점 태그 5개
             $("p#star_rv_score a.rv_score").on("click", function(e) {
@@ -393,8 +437,8 @@
 
       //로그인한 사용자와 상품후기 등록 사용자가 동일한가
       if(login_id == mbsp_id) {
-        str+= `<button type ="button" class="btn btn-info" data-rew_num="${rew_num}">[edit]</button>`
-        str+= `<button type ="button" name="btn_review_del" class="btn btn-danger" data-rew_num="${rew_num}">[delete]</button>`
+        str += '<button type="button" name="btn_review_edit" class="btn btn-info" data-rew_num="' + rew_num + '">edit</button>';
+          str += ' <button type="button" name="btn_review_del" class="btn btn-danger" data-rew_num="' + rew_num + '">delete</button>';
         console.log("에스티알"+str)
         return new Handlebars.SafeString(str)
       }
@@ -412,6 +456,32 @@
         console.log("페이징번호");
         reviewPage.remove();
       })
+      $("#review_list").on("click","button[name='btn_review_edit']", function() {
+       $("#btn_review_save").hide();
+
+       let rew_score =  $(this).data("rew_score");
+       console.log("별 평점" + rew_score);
+        $("#star_rv_score a.rv_score").each(function(index,item) {
+          if(index < rew_score) {
+            $(item).addClass("on");
+
+          }else {
+            $(item).removeClass("on");
+          }
+
+       })
+        $("#btn_review_modify").show();
+        $("#btn_review_modify").data("rew_num",$(this).parent().parent().find(".rew_num"))
+        $('#review_modal').modal('show');
+        $("#rew_content").text($(this).parent().parent().find(".rew_content").text());   
+        $("#rew_num").text($(this).parent().parent().find(".rew_num").text());
+        $("#rew_regdate").text($(this).parent().parent().find(".rew_regdate").text());
+
+              //  console.log("번호", $(this).parent().parent().find(".rew_num").text());
+              //  console.log("내용", $(this).parent().parent().find(".rew_content").text());
+              // console.log("평점", $(this).parent().parent().find(".rew_score").text());
+              // console.log("날짜", $(this).parent().parent().find(".rew_regdate").text());
+            })
 
 
     })
@@ -484,6 +554,9 @@
                 }
               });
             });
+           
+
+
     }); // ready event end
     </script>
 
@@ -493,7 +566,8 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">상품후기</h5>
+            <!-- <h5 class="modal-title" id="exampleModalLabel">상품후기</h5> -->
+            <b>상품후기</b><span id="rew_num"></span><span id="rew_regdate"></span>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -502,6 +576,7 @@
             <form>
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">별평점</label>
+                
                 <p id="star_rv_score">
                   <a class="rv_score" href="#">★</a>
                   <a class="rv_score" href="#">★</a>
@@ -517,8 +592,9 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="btn_review_close" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="button" id="btn_review_save" class="btn btn-primary" data-pro_num="${productVO.pro_num}">상품후기저장</button>
+            <button type="button" id="btn_review_modify" class="btn btn-primary" data-rew_num ="${rew_num}">상품후기변경</button>
           </div>
         </div>
       </div>

@@ -447,7 +447,9 @@
               $("#pay_bankaccount").val($(this).val())
             })
 
-      });
+
+            
+      }); //end
 
 
 

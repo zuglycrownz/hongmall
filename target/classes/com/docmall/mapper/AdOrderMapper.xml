@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.docmall.mapper.AdOrderMapper">
+
+	<sql id="criteria">
+	<trim prefix="(" suffix=") AND" prefixOverrides="OR" >
+		<foreach collection="typeArr" item="type">
+			<trim prefix="OR">
+				<choose>
+					<when test="type == 'C'.toString()">
+					ord_code like '%' || #{keyword} || '%'
+					</when>
+					<when test="type ==  'N'.toString()">
+					ORD_NAME like '%' || #{keyword} || '%'
+					</when>
+
+				
+				</choose>
+			
+			</trim>
+		
+		</foreach>	
+	
+	
+	</trim>
+</sql>
+
+<select id="order_list" resultType="com.docmall.domain.OrderVO" parameterType="com.docmall.dto.Criteria">
+<![CDATA[
+select ord_code, MBSP_ID, ORD_NAME, ORD_TEL, ORD_PRICE, ORD_REGDATE, ORD_STATUS, PAYMENT_STATUS
+from (
+        select /*+ index_desc(ORDER_TBL PK_ORDER_TBL) */ rownum rn,ord_code, MBSP_ID, ORD_NAME, ORD_TEL, ORD_PRICE, ORD_REGDATE, ORD_STATUS, PAYMENT_STATUS
+from ORDER_TBL
+where
+]]>
+<include refid="criteria"></include>
+<![CDATA[
+ rownum<=#{pageNum} * #{amount}
+)
+where rn>(#{pageNum}-1) * #{amount}
+]]>
+</select>
+
+
+<select id="getTotalCount" resultType="int">
+select count(*) from ORDER_TBL where
+<include refid="criteria"></include>
+ord_code > 0
+</select>
+
+
+</mapper>
