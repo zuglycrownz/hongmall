@@ -50,5 +50,65 @@ select count(*) from ORDER_TBL where
 ord_code > 0
 </select>
 
+<select id="orderDetailInfo1" parameterType="Long" resultType="com.docmall.domain.OrderDetailInfoVO">
+select
+ot.ord_code, ot.PRO_NUM,ot.dt_amount ,ot.DT_AMOUNT * p.pro_price as ord_price, p.PRO_NAME, p.PRO_PRICE,p.PRO_UP_FOLDER,
+p.PRO_IMG from ORDETAIL_TBL ot,PRODUCT_TBL p
+where ot.pro_num = p.pro_num
+and ot.ord_code = #{ord_code}
+
+</select>
+
+<select id="orderDetailInfo2" parameterType="Long" resultMap="orderdetailproductMap">
+select
+ot.ord_code, ot.PRO_NUM,ot.dt_amount ,ot.DT_AMOUNT * p.pro_price as ord_price, p.PRO_NAME, p.PRO_PRICE,p.PRO_UP_FOLDER,
+p.PRO_IMG from ORDETAIL_TBL ot,PRODUCT_TBL p
+where ot.pro_num = p.pro_num
+and ot.ord_code = #{ord_code}
+
+</select>
+
+
+
+<resultMap type="com.docmall.domain.OrderDetailProductVO" id="orderdetailproductMap">
+<collection property="orderDetailVO" resultMap="orderDetailMap"></collection>
+<collection property="productVO" resultMap="productMap"></collection>
+</resultMap>
+
+<!-- orderDetailVO필드에서 필요한 정보 -->
+<!-- resultMap : 테이블의 컬럼명과 클래스의 필드명이 다를경우 매핑해주는 작업  property="클래스명" column="DB명"-->
+<resultMap type="com.docmall.domain.OrderDetailVO" id="orderDetailMap">
+<id property="ord_code" column="ord_code"/>
+<id property="pro_num" column="pro_num"/>
+<result property="dt_amount" column="dt_amount"></result>
+<result property="ord_price" column="ord_price"></result>
+
+</resultMap>
+
+<resultMap type="com.docmall.domain.ProductVO" id="productMap">
+<id property="pro_num" column="pro_num"/>
+<result property="cg_code" column="cg_code"></result>
+<result property="pro_name" column="pro_name"></result>
+<result property="pro_price" column="pro_price"></result>
+<result property="pro_discount" column="pro_discount"></result>
+<result property="pro_publisher" column="pro_publisher"></result>
+<result property="pro_content" column="pro_content"></result>
+<result property="pro_up_folder" column="pro_up_folder"></result>
+<result property="pro_img" column="pro_img"></result>
+<result property="pro_amount" column="pro_amount"></result>
+<result property="pro_buy" column="pro_buy"></result>
+<result property="pro_date" column="pro_date"></result>
+<result property="pro_updatedate" column="pro_updatedate"></result>
+
+</resultMap>
+
+
+<delete id="order_product_delete" parameterType="map">
+
+DELETE FROM ORDETAIL_TBL WHERE ord_code = #{ord_code} and pro_num = #{pro_num}
+
+</delete>
+
+
 
 </mapper>

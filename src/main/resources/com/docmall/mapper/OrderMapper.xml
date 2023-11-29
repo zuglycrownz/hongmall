@@ -25,7 +25,7 @@ values
 
 <insert id="order_detail_insert" parameterType="map">
 insert into 
-ORDETAIL_TBL(ord_code, PRO_NUM, DT_AMOUNT, DT_PRICE)
+ORDETAIL_TBL(ord_code, PRO_NUM, DT_AMOUNT, ord_price)
 select 
 #{ord_code},c.PRO_NUM,c.CART_AMOUNT,p.PRO_PRICE
 from 
