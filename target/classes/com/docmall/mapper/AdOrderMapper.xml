@@ -6,14 +6,14 @@
 
 	<sql id="criteria">
 	<trim prefix="(" suffix=") AND" prefixOverrides="OR" >
-		<foreach collection="typeArr" item="type">
+		<foreach collection="cri.typeArr" item="type">
 			<trim prefix="OR">
 				<choose>
-					<when test="type == 'C'.toString()">
-					ord_code like '%' || #{keyword} || '%'
+					<when test="cri.type == 'C'.toString()">
+					ord_code like '%' || #{cri.keyword} || '%'
 					</when>
-					<when test="type ==  'N'.toString()">
-					ORD_NAME like '%' || #{keyword} || '%'
+					<when test="cri.type ==  'N'.toString()">
+					ORD_NAME like '%' || #{cri.keyword} || '%'
 					</when>
 
 				
@@ -26,6 +26,14 @@
 	
 	</trim>
 </sql>
+<sql id="period">
+<if test="start_date != null and !start_date.equals('')"></if>
+<![CDATA[
+	ord_regdate >= to_date(#{start_date}) AND ord_regdate < to_date(#{end_date}) + 1 and
+
+]]>
+
+</sql>
 
 <select id="order_list" resultType="com.docmall.domain.OrderVO" parameterType="com.docmall.dto.Criteria">
 <![CDATA[
@@ -36,10 +44,11 @@ from ORDER_TBL
 where
 ]]>
 <include refid="criteria"></include>
+<include refid="period"></include>
 <![CDATA[
- rownum<=#{pageNum} * #{amount}
+ rownum<=#{cri.pageNum} * #{cri.amount}
 )
-where rn>(#{pageNum}-1) * #{amount}
+where rn>(#{cri.pageNum}-1) * #{cri.amount}
 ]]>
 </select>
 
@@ -47,6 +56,7 @@ where rn>(#{pageNum}-1) * #{amount}
 <select id="getTotalCount" resultType="int">
 select count(*) from ORDER_TBL where
 <include refid="criteria"></include>
+<include refid="period"></include>
 ord_code > 0
 </select>
 

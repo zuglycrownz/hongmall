@@ -41,19 +41,19 @@ public class AdOrderController {
 	private final AdOrderService adOrderService;
 	
 	@GetMapping("/order_list")
-	public void pro_list(Criteria cri, Model model) throws Exception {
+	public void pro_list(Criteria cri, Model model,@ModelAttribute("start_date") String start_date,@ModelAttribute("end_date") String end_date) throws Exception {
 		
 		// this(1, 10);
 		// 10 -> 2
 		cri.setAmount(2);
 		
 		
-		List<OrderVO> order_list = adOrderService.order_list(cri);
+		List<OrderVO> order_list = adOrderService.order_list(cri,start_date,end_date);
 		
 
 		model.addAttribute("order_list", order_list);
 		
-		int totalCount = adOrderService.getTotalCount(cri);
+		int totalCount = adOrderService.getTotalCount(cri,start_date,end_date);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 	}
 	//json으로 변환한거 전송

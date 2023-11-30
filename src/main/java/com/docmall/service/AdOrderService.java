@@ -12,9 +12,9 @@ import com.docmall.dto.Criteria;
 public interface AdOrderService {
 
 	
-	List<OrderVO> order_list(Criteria cri);
+	List<OrderVO> order_list(Criteria cri,String start_date,String end_date);
 	
-	int getTotalCount(Criteria cri);
+	int getTotalCount(@Param("cri") Criteria cri,String start_date,String end_date);
 	
 	List<OrderDetailInfoVO> orderDetailInfo1(Long ord_code);
 	

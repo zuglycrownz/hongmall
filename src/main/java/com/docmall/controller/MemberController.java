@@ -109,7 +109,13 @@ public class MemberController {
 				
 				//로그인 시간 업데이트
 				memberService.loginTimeUpdate(dto.getMbsp_id());
+				if(session.getAttribute("targetURL")!= null ) {
+					
+					url = (String) session.getAttribute("targetURL");
+				}
+				else {
 				url = "/"; // 메인페이지 주소
+				}
 			}else {
 				url = "/member/login"; // 로그인 폼주소
 				msg = "비밀번호가 일치하지 않읍니다.";

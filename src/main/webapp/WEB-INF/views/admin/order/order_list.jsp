@@ -13,24 +13,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title>AdminLTE 2 | Starter</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  
+  <style>
+        /* Important part */
+    .modal-content{
+      overflow-y: initial !important
+      }
+    .modal-body{
+      height: 250px;
+      overflow-y: auto;
+    }
+  </style>
   <%@include file="/WEB-INF/views/admin/include/plugin1.jsp" %>
-  
-  <%@include file="/WEB-INF/views/comm/plugIn2.jsp" %>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
-
-  <!--핸들러를 활용한 주문상세-->
   <script id="orderDetailTemplate" type="text/x-handlebars-template">
-  <tr class="tr_detail_info">
-    <td colspan="9"> <!--th가 9개-->
-        <table class="table table-sm" id="order_info_tbl">
+    <tr class="tr_detail_info">
+      <td colspan="9" >
+        <table class="table table-sm">
+          <caption style="display: table-caption;text-align: center;color: red;font-weight: bold;">[주문상세정보]</caption>
           <thead>
             <tr>
-              <th scope="col">번호</th>
+              <th scope="col">주문번호</th>
               <th scope="col">상품코드</th>
               <th scope="col">상품이미지</th>
               <th scope="col">상품명</th>
@@ -40,24 +42,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </tr>
           </thead>
           <tbody>
-        {{#each .}}
+            {{#each .}}
             <tr>
-              <th scope="row" >{{ord_code}}</th>
-              <td >{{pro_num}}</td>
-              <td ><img class="btn_pro_img" width="75%" height="300"  src="/admin/order/imageDisplay?dateFolderName={{pro_up_folder}}&fileName={{pro_img}}"></td>
-              <td >{{pro_name}}</td>
-              <td >{{dt_amount}}</td>
-              <td >{{ord_price}}</td>
-              <td><button type="button" name="btn_review_del" class="btn btn-danger" data-ord_code="{{ord_code}}" data-pro_num="{{pro_num}}">delete</button></td>
+              <th scope="row">{{ord_code}}</th>
+              <td>{{pro_num}}</td>
+              <td><img src='/admin/order/imageDisplay?dateFolderName={{pro_up_folder}}&fileName={{pro_img}}'></td>
+              <td>{{pro_name}}</td>
+              <td>{{dt_amount}}</td>
+              <td>{{ord_price}}</td>
+              <td><button type="button"  name="btn_order_delete" class="btn btn-danger" data-ord_code="{{ord_code}}" data-pro_num="{{pro_num}}">delete</button></td>
             </tr>
             {{/each}}
           </tbody>
         </table>
       </td>
     </tr>
-          </script>
-
-
+</script>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -122,41 +122,44 @@ desired effect
 									<input type="text" name="keyword" value="${pageMaker.cri.keyword}" />
 									<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}" />
 									<input type="hidden" name="amount" value="${pageMaker.cri.amount}" />
+                  날짜검색 : <input type="date" name="start_date" value="${start_date}"> 
+                    ~
+                  <input type="date" name="end_date" value="${end_date}"> 
 									<button type="submit" class="btn btn-primary">검색</button>
 							</form>
 						</div>
-						<table class="table table-bordered" id="order_info">
+						<table class="table table-bordered" id="order_info_tbl">
 							<tbody><tr>
-								<th style="width: 8%">번호</th>
-								<th style="width: 15%">주문일시</th>
+							  <th style="width: 8%">번호</th>
+								<th style="width: 10%">주문일시</th>
 								<th style="width: 10%">주문번호</th>
-								<th style="width: 20%">주문금액</th>
 								<th style="width: 15%">배송비</th>
-								<th style="width: 5%">주문상태</th>
-								<th style="width: 5%">주문자</th>
-                <th style="width: 5%">총주문액</th>
-                <th style="width: 5%">결제방법</th>
-                <th style="width: 5%">비고</th>
-                <th style="width: 5%">비고</th>
-                
+								<th style="width: 15%">주문상태</th>
+								<th style="width: 10%">주문자</th>
+								<th style="width: 10%">총주문액</th>
+								<th style="width: 10%">결제상태</th>
+                				<th style="width: 10%">비고</th>
 							</tr>
-							<c:forEach items="${order_list}" var="orderVO">
+							<c:forEach items="${order_list }" var="orderVO">
 							<tr>
 								<td>번호</td>
-								<td><fmt:formatDate value="${orderVO.ord_regdate }" pattern="yyyy-MM-dd" /></td>
-								<td><span class="btn_order_detail1">${orderVO.ord_code}</span></td>
-								<td>0</td>
-                <td>0</td>
 								<td>
-                  주문상태
+									<fmt:formatDate value="${orderVO.ord_regdate }" pattern="yyyy-MM-dd hh:mm:ss" />
+								</td>
+								<td><span class="btn_order_detail">${orderVO.ord_code }</span></td>
+								<td>0</td>
+								<td>
+									주문상태
 								</td>
 								<td>${orderVO.ord_name}</td>
 								<td>${orderVO.ord_price}</td>
-                <td>${orderVO.payment_status}</td>
-                <td><button type="button" class="btn btn-primary btn_order_detail1" data-ord_code="${orderVO.ord_code}">주문상세1</button></td>
-                <td><button type="button" class="btn btn-primary btn_order_detail2" data-ord_code="${orderVO.ord_code}">주문상세2</button></td>
-
-                <!-- <td><button type="button" class="btn btn-danger btn_pro_del">삭제</button></td> -->
+								<td>${orderVO.payment_status}</td>
+                				<td>
+                					<button type="button" class="btn btn-info btn_order_detail1" data-ord_code="${orderVO.ord_code }">주문상세1</button>
+                				</td>
+                				<td>
+                					<button type="button" class="btn btn-info btn_order_detail2" data-ord_code="${orderVO.ord_code }">주문상세2</button>
+                				</td>
 							</tr>
 							</c:forEach>
 							</tbody></table>
@@ -164,6 +167,7 @@ desired effect
 					<div class="box-footer clearfix">
 						<div class="row">
 							<div class="col-md-4">
+								
 							<!--1)페이지번호 클릭할 때 사용  [이전]  1	2	3	4	5 [다음]  -->
 							<!--2)목록에서 상품이미지 또는 상품명 클릭할 때 사용   -->
 							  <form id="actionForm" action="" method="get">
@@ -202,7 +206,7 @@ desired effect
 								</ul>
 								</nav>
 							</div>
-
+							
 						</div>
 						
 					</div>
@@ -312,89 +316,112 @@ desired effect
       actionForm.attr("action", "/admin/order/order_list");
       actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 
+      // <input type="date" name="start_date" value="${start_date}">
+
+      actionForm.append('<input type="date" name="start_date" value="${start_date}">');
+      actionForm.append('<input type="date" name="end_date" value="${end_date}">');
+
        actionForm.submit();
     });
+   
+
+  // 주문상세 방법1 이벤트
+  $(".btn_order_detail1").on("click", function() {
     
-
-
-  //주문상세 이벤트
-  $(".btn_order_detail1").on("click",function() {
-
     let cur_tr = $(this).parent().parent();
-    console.log("cur_tr",cur_tr) // tr
     let ord_code = $(this).data("ord_code");
 
-    console.log("주문번호",ord_code);
+    console.log("주문번호", ord_code);
 
     let url = "/admin/order/order_detail_info1/" + ord_code;
-    getorderdetailinfo(url,cur_tr);
-
+    getOrderDetailInfo(url, cur_tr);
   });
-  function getorderdetailinfo(url,cur_tr) {
- $.getJSON(url, function(data) {
+
+  function getOrderDetailInfo(url,cur_tr) {
+    $.getJSON(url, function(data) {
+
+      // data : 주문상세정보
+      console.log("상세정보", data[0].ord_code);
+
+      printOrderDetailList(data, cur_tr, $("#orderDetailTemplate"))
 
 
-  printOrderDetailList(data,cur_tr,$("#orderDetailTemplate"));
+    });
+  }
 
-    
-});
-}
-
-
-//첫번쨰작업 orderDetailTemplate = 핸들러틀 주소 //url로 getjson정보를받음 data = orderdetailinfo
-
-//두번째 작업
-let printOrderDetailList = function(orderDetailData, target, template) {
+  let printOrderDetailList = function(orderDetailData, target, template) {
       let templateObj = Handlebars.compile(template.html());
       let orderDetailHtml = templateObj(orderDetailData);
-      
-      // 상품후기목록 위치를 참조하여, 추가
-      target.parent().find(".tr_detail_info").remove();
-      target.after(orderDetailHtml);
-    }
-$("table#order_info").on("click","button[name='btn_review_del']",function() {
-  console.log("개별삭제");
 
-  let ord_code = $(this).data("ord_code");
-  let pro_num = $(this).data("pro_num");
-console.log("ord_code",ord_code)
-console.log("pro_num",pro_num)
-  actionForm.append('<input type="hidden" name="ord_code" value="' + ord_code + '">');
-  actionForm.append('<input type="hidden" name="ord_code" value="' + pro_num + '">');
-  actionForm.attr("")
-})
-$(".btn_order_detail2").on("click",function() {
+        //상품후기목록 위치를 참조하여, 추가
+        // table태그에서 추가된 주문상세 tr을 모두제거.
+        target.parent().find(".tr_detail_info").remove();
+        // 선택된 주문상세 tr이 바로아래 추가된다.
+        target.after(orderDetailHtml);
+  }
+
+  //주문상세에서 개별삭제
+  $("table#order_info_tbl").on("click", "button[name='btn_order_delete']", function() {
+
+    // console.log("개별삭제");
+    
+    // 주문상세테이블은 primary key가 2개컬럼을 대상으로 복합키 설정이 되어있다.
+    let ord_code = $(this).data("ord_code");
+    let pro_num = $(this).data("pro_num");
+
+    if(!confirm("상품코드 " + pro_num + " 번을 삭제하시겠읍니까?")) return;
+
+    // console.log("주문번호", ord_code);
+    // console.log("상품코드", pro_num);
+
+    // <input type='hidden' name='ord_code' value=''>
+
+    actionForm.append("<input type='hidden' name='ord_code' value='" + ord_code + "'>");
+    actionForm.append("<input type='hidden' name='pro_num' value='" + pro_num + "'>");
+
+    actionForm.attr("action", "/admin/order/order_product_delete");
+    actionForm.submit();
+
+  });
 
 
-let ord_code = $(this).data("ord_code");
-let url = "/admin/order/order_detail_info2/" + ord_code;
-console.log("주소 :" + url)
-$("#order_detail_content").load(url)
+   // 주문상세 방법2 이벤트
+   $(".btn_order_detail2").on("click", function() {
+    
+    // let cur_tr = $(this).parent().parent();
+    let ord_code = $(this).data("ord_code");
 
-$("#order_detail_modal").modal('show');
+    console.log("주문번호", ord_code);
 
-});
+    let url = "/admin/order/order_detail_info2/" + ord_code;
+
+    $("#order_detail_content").load(url);
+    // modal() : 부트스트랩 4.6 메서드
+    $("#order_detail_modal").modal('show');
+  });
+
 
 }); // ready 이벤트
 </script>
-
-<div class="modal fade" id="order_detail_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
-  <div class="modal-dialog">
+<div class="modal fade" id="order_detail_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="exampleModalLongTitle">주문상세내역</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
       </div>
       <div class="modal-body" id="order_detail_content">
-        <div>hihi</div>
-
+        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
+
+
 </body>
 </html>
